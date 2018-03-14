@@ -25,6 +25,7 @@ class Default:
 
     DEBUG = True
     SECRET_KEY = os.urandom(24)
+    LOGLEVEL = "DEBUG"
 
 
 class Development(Default):
@@ -39,3 +40,4 @@ class Production(Default):
 
     DEBUG = False
     SECRET_KEY = os.environ['SECRET_KEY']
+    LOGLEVEL = "INFO"

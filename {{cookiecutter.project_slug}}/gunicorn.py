@@ -15,7 +15,6 @@
 
 """Configure the gunicorn server."""
 
-import logging
 import os
 
 _config = os.environ["ENVIRONMENT"]
@@ -38,5 +37,3 @@ else:
     reload = True
     loglevel = "DEBUG"
     access_log_format = '''%(t)s "%(r)s" %(s)s %(b)s %(L)s "%(f)s"'''
-logging.basicConfig(level=loglevel,
-                    format='[%(levelname)s - %(name)s] %(message)s')

@@ -15,6 +15,7 @@
 
 """Expose the main Flask-RESTPlus application."""
 
+import logging
 import os
 
 from flask import Flask
@@ -40,5 +41,7 @@ def init_app(application, interface):
         application.config.from_object(settings.Testing)
     else:
         application.config.from_object(settings.Development)
+    logging.basicConfig(level=application.config['LOGLEVEL'],
+                        format='[%(levelname)s - %(name)s] %(message)s')
     interface.add_resource(resources.HelloWorld, "/")
     interface.init_app(application)

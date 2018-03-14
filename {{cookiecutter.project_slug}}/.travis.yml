@@ -1,0 +1,37 @@
+sudo: required
+language: python
+python: "3.6"
+
+git:
+  depth: 3
+
+services:
+  - docker
+
+before_install:
+  - pip install -U pip setuptools wheel
+  - pip install pipenv
+
+install:
+  - pipenv install --dev --system
+
+script:
+  - py.test -vxs --cov={{cookiecutter.project_slug}} tests
+  - flake8 {{cookiecutter.project_slug}} tests
+  - isort --check-only --recursive {{cookiecutter.project_slug}} tests
+  - ./scripts/verify_license_headers.sh {{cookiecutter.project_slug}}
+  - docker build .
+
+after_success:
+  - codecov
+  - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
+
+deploy:
+  provider: script
+  script: ./scripts/push_to_hub.sh
+  on:
+    all_branches: true
+
+notifications:
+  on_success: never
+  on_failure: always

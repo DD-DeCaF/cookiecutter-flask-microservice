@@ -1,0 +1,28 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+flask-restplus = "*"
+gunicorn = "*"
+gevent = "*"
+
+
+[dev-packages]
+
+tox = "*"
+detox = "*"
+flake8 = "*"
+pytest = "*"
+pytest-cov = "*"
+codecov = "*"
+isort = "*"
+
+
+[requires]
+
+python_version = "3.6"

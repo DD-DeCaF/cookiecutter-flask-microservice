@@ -1,0 +1,8 @@
+language: python
+python: "3.6"
+before_install:
+  - pip install -U pip setuptools wheel
+  - pip install pipenv
+install:
+  - pipenv install --dev
+script: pytest

@@ -1,0 +1,6 @@
+*
+!{{cookiecutter.project_slug}}
+!gunicorn.py
+!setup.py
+!setup.cfg
+!Pipfile*

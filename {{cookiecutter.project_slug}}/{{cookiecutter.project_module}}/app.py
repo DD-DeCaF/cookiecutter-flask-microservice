@@ -20,8 +20,8 @@ import os
 from flask import Flask
 from flask_restplus import Api
 
-import {{cookiecutter.project_slug}}.resources as resources
-import {{cookiecutter.project_slug}}.settings as settings
+import {{cookiecutter.project_module}}.resources as resources
+import {{cookiecutter.project_module}}.settings as settings
 
 
 app = Flask(__name__)

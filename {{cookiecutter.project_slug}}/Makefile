@@ -17,23 +17,23 @@ qa: test flake8 isort license
 
 ## Run the tests
 test:
-	docker-compose run --rm web pytest --cov={{cookiecutter.project_slug}} tests
+	docker-compose run --rm web pytest --cov={{cookiecutter.project_module}} tests
 
 ## Run flake8
 flake8:
-	docker-compose run --rm web flake8 {{cookiecutter.project_slug}} tests
+	docker-compose run --rm web flake8 {{cookiecutter.project_module}} tests
 
 ## Check import sorting
 isort:
-	docker-compose run --rm web isort --check-only --recursive {{cookiecutter.project_slug}} tests
+	docker-compose run --rm web isort --check-only --recursive {{cookiecutter.project_module}} tests
 
 ## Sort imports and write changes to files
 isort-save:
-	docker-compose run --rm web isort --recursive {{cookiecutter.project_slug}} tests
+	docker-compose run --rm web isort --recursive {{cookiecutter.project_module}} tests
 
 ## Verify source code license headers
 license:
-	./scripts/verify_license_headers.sh {{cookiecutter.project_slug}}
+	./scripts/verify_license_headers.sh {{cookiecutter.project_module}}
 
 ## Shut down the Docker containers.
 stop:

@@ -1,4 +1,4 @@
-# PROJECTNAME
+# {{cookiecutter.project_name}}
 
 ![Branch](https://img.shields.io/badge/branch-master-blue.svg)
 [![Build Status](https://travis-ci.org/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?branch=master)](https://travis-ci.org/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}})

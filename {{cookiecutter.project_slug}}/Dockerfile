@@ -13,5 +13,3 @@ RUN apk add --no-cache --virtual .build-deps g++ \
     && pipenv install --system --deploy \
     && rm -rf /root/.cache/pip \
     && apk del .build-deps
-
-CMD ["gunicorn", "-c", "gunicorn.py", "{{cooiecutter.project_slug}}.wsgi:app"]

@@ -12,3 +12,4 @@ services:
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=${ENVIRONMENT:-development}
       - SECRET_KEY=${SECRET_KEY:-ohgodpleasechangeme}
+    command: gunicorn -c gunicorn.py {{cookiecutter.project_slug}}.wsgi:app

@@ -33,7 +33,7 @@ api = Api(
 )
 
 
-def init_app(application: Flask, interface: Api):
+def init_app(application, interface):
     if os.environ["ENVIRONMENT"] == "production":
         application.config.from_object(settings.Production)
     elif os.environ["ENVIRONMENT"] == "testing":

@@ -1,58 +1,49 @@
+.PHONY: network start qa test flake8 isort isort-save license stop clean logs
+
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
 
 ## Create the external network
-.PHONY: network
 network:
 	docker network inspect iloop >/dev/null || docker network create iloop
 
 ## Install and start the service.
-.PHONY: start
 start: network
 	docker-compose up -d --build
 
 ## Run all QA targets
-.PHONY: qa
 qa: test flake8 isort license
 
 ## Run the tests
-.PHONY: test
 test:
 	docker-compose run --rm web pytest --cov={{cookiecutter.project_slug}} tests
 
 ## Run flake8
-.PHONY: flake8
 flake8:
 	docker-compose run --rm web flake8 {{cookiecutter.project_slug}} tests
 
 ## Check import sorting
-.PHONY: isort
 isort:
 	docker-compose run --rm web isort --check-only --recursive {{cookiecutter.project_slug}} tests
 
 ## Sort imports and write changes to files
-.PHONY: isort-save
 isort-save:
 	docker-compose run --rm web isort --recursive {{cookiecutter.project_slug}} tests
 
 ## Verify source code license headers
-.PHONY: license
 license:
 	./scripts/verify_license_headers.sh {{cookiecutter.project_slug}}
 
 ## Shut down the Docker containers.
-.PHONY: stop
 stop:
 	docker-compose stop
 
 ## Remove all containers.
-.PHONY: clean
 clean:
 	docker-compose down
 
 ## Read the logs.
-.PHONY: logs
 logs:
 	docker-compose logs --tail="all" -f
 

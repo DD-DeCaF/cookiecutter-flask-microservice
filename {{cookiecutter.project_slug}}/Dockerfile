@@ -12,6 +12,6 @@ COPY Pipfile* ${INSTALL_PATH}/
 # later removed again to reduce the layer size.
 RUN apk add --no-cache --virtual .build-deps g++ \
     && pip install pipenv \
-    && pipenv install --system --deploy \
+    && pipenv install --dev --system --deploy \
     && rm -rf /root/.cache/pip \
     && apk del .build-deps

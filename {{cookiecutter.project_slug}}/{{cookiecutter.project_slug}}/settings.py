@@ -20,7 +20,7 @@ import os
 __all__ = ("Development", "Testing", "Production")
 
 
-class Default(object):
+class Default:
 
     DEBUG = True
     SECRET_KEY = os.urandom(24)

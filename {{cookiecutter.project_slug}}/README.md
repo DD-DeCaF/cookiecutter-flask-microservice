@@ -23,3 +23,4 @@ possible variables and their default values.
   * `development`
   * `testing`
   * `production`
+* `SECRET_KEY` Flask secret key. Will be randomly generated in dev/testing envs

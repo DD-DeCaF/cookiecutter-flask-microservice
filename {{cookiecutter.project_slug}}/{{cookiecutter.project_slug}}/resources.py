@@ -19,6 +19,7 @@ import logging
 
 from flask_restplus import Resource
 
+
 LOGGER = logging.getLogger(__name__)
 
 

@@ -26,6 +26,7 @@ class Default:
     DEBUG = True
     SECRET_KEY = os.urandom(24)
     LOGLEVEL = "DEBUG"
+    CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(",")
 
 
 class Development(Default):

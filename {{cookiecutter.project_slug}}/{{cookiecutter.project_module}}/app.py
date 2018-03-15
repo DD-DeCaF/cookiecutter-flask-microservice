@@ -20,6 +20,7 @@ import os
 
 from flask import Flask
 from flask_restplus import Api
+from flask_cors import CORS
 
 import {{cookiecutter.project_module}}.resources as resources
 import {{cookiecutter.project_module}}.settings as settings
@@ -43,5 +44,6 @@ def init_app(application, interface):
         application.config.from_object(settings.Development)
     logging.basicConfig(level=application.config['LOGLEVEL'],
                         format='[%(levelname)s - %(name)s] %(message)s')
+    CORS(application)
     interface.add_resource(resources.HelloWorld, "/")
     interface.init_app(application)

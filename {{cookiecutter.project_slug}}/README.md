@@ -1,4 +1,4 @@
-# PROJECTNAME
+# {{cookiecutter.project_name}}
 
 ![Branch](https://img.shields.io/badge/branch-master-blue.svg)
 [![Build Status](https://travis-ci.org/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?branch=master)](https://travis-ci.org/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}})
@@ -23,3 +23,4 @@ possible variables and their default values.
   * `development`
   * `testing`
   * `production`
+* `SECRET_KEY` Flask secret key. Will be randomly generated in dev/testing envs

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) {{cookiecutter.year}}, Novo Nordisk Foundation Center for Biosustainability,
 # Technical University of Denmark.
 #
@@ -17,13 +15,15 @@
 
 """Expose the main Flask-RESTPlus application."""
 
+import logging
 import os
 
 from flask import Flask
 from flask_restplus import Api
 
-import {{cookiecutter.project_slug}}.settings as settings
-import {{cookiecutter.project_slug}}.resources as resources
+import {{cookiecutter.project_module}}.resources as resources
+import {{cookiecutter.project_module}}.settings as settings
+
 
 app = Flask(__name__)
 api = Api(
@@ -34,12 +34,14 @@ api = Api(
 )
 
 
-def init_app(application: Flask, interface: Api):
+def init_app(application, interface):
     if os.environ["ENVIRONMENT"] == "production":
         application.config.from_object(settings.Production)
     elif os.environ["ENVIRONMENT"] == "testing":
         application.config.from_object(settings.Testing)
     else:
         application.config.from_object(settings.Development)
+    logging.basicConfig(level=application.config['LOGLEVEL'],
+                        format='[%(levelname)s - %(name)s] %(message)s')
     interface.add_resource(resources.HelloWorld, "/")
     interface.init_app(application)

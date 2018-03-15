@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) {{cookiecutter.year}}, Novo Nordisk Foundation Center for Biosustainability,
 # Technical University of Denmark.
 #
@@ -15,9 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Prepare the application for use by the WSGI server (gunicorn)."""
+"""Implement RESTful API endpoints using resources."""
 
-from {{cookiecutter.project_slug}}.app import app, api, init_app
+import logging
+
+from flask_restplus import Resource
 
 
-init_app(app, api)
+LOGGER = logging.getLogger(__name__)
+
+
+class HelloWorld(Resource):
+    def get(self):
+        """Shout out loud."""
+        return "Hello World!"

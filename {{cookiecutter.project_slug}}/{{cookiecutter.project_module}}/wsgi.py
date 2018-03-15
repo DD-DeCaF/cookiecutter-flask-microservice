@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) {{cookiecutter.year}}, Novo Nordisk Foundation Center for Biosustainability,
 # Technical University of Denmark.
 #
@@ -15,28 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Provide settings for different deployment scenarios."""
+"""Prepare the application for use by the WSGI server (gunicorn)."""
 
-import os
-
-__all__ = ("Development", "Testing", "Production")
+from {{cookiecutter.project_module}}.app import api, app, init_app
 
 
-class Default(object):
-
-    DEBUG = True
-    SECRET_KEY = os.urandom(24)
-
-
-class Development(Default):
-    pass
-
-
-class Testing(Default):
-    pass
-
-
-class Production(Default):
-
-    DEBUG = False
-    SECRET_KEY = os.environ['SECRET_KEY']
+init_app(app, api)

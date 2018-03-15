@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) {{cookiecutter.year}}, Novo Nordisk Foundation Center for Biosustainability,
 # Technical University of Denmark.
 #
@@ -15,16 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Implement RESTful API endpoints using resources."""
-
-import logging
-
-from flask_restplus import Resource
-
-LOGGER = logging.getLogger(__name__)
-
-
-class HelloWorld(Resource):
-    def get(self):
-        """Shout out loud."""
-        return "Hello World!"
+"""{{cookiecutter.project_short_description}}"""

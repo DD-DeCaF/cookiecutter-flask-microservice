@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (c) {{cookiecutter.year}}, Novo Nordisk Foundation Center for Biosustainability,
 # Technical University of Denmark.
 #
@@ -15,4 +13,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""{{cookiecutter.project_short_description}}"""
+"""Provide settings for different deployment scenarios."""
+
+import os
+
+
+__all__ = ("Development", "Testing", "Production")
+
+
+class Default:
+
+    DEBUG = True
+    SECRET_KEY = os.urandom(24)
+    LOGLEVEL = "DEBUG"
+
+
+class Development(Default):
+    pass
+
+
+class Testing(Default):
+    pass
+
+
+class Production(Default):
+
+    DEBUG = False
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    LOGLEVEL = "INFO"

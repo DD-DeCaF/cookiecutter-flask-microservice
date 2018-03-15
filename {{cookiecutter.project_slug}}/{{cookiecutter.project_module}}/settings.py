@@ -26,6 +26,7 @@ class Default:
     DEBUG = True
     SECRET_KEY = os.urandom(24)
     LOGLEVEL = "DEBUG"
+    CORS_ORIGINS = ["http://localhost"]
 
 
 class Development(Default):
@@ -41,3 +42,4 @@ class Production(Default):
     DEBUG = False
     SECRET_KEY = os.environ.get('SECRET_KEY')
     LOGLEVEL = "INFO"
+    CORS_ORIGINS = os.environ.get('ALLOWED_ORIGINS')

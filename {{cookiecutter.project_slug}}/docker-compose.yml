@@ -10,4 +10,5 @@ services:
       - "./:/app"
     environment:
       - ENVIRONMENT=${ENVIRONMENT:-development}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
     command: gunicorn -c gunicorn.py {{cookiecutter.project_slug}}.wsgi:app

@@ -22,8 +22,8 @@ from flask import Flask
 from flask_restplus import Api
 from flask_cors import CORS
 
-import {{cookiecutter.project_module}}.resources as resources
-import {{cookiecutter.project_module}}.settings as settings
+from {{cookiecutter.project_module}} import resources
+from {{cookiecutter.project_module}} import settings
 
 
 app = Flask(__name__)

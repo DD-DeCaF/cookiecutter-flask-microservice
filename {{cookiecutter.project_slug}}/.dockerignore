@@ -1,7 +1,11 @@
 *
-!{{cookiecutter.project_slug}}
-!tests
+!{{cookiecutter.project_slug}}/
+!tests/
 !gunicorn.py
 !setup.py
 !setup.cfg
 !Pipfile*
+!MANIFEST.in
+!pyproject.toml
+!versioneer.py
+!tox.ini

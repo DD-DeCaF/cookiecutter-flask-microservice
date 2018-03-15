@@ -7,16 +7,10 @@ name = "pypi"
 
 [packages]
 
-Flask = "*"
-flask-restplus = "*"
-Flask-Cors = "*"
-gunicorn = "*"
-gevent = "*"
-raven = {extras = ["flask"], version = "*"}
-
 
 [dev-packages]
 
+versioneer = "*"
 tox = "*"
 detox = "*"
 flake8 = "*"

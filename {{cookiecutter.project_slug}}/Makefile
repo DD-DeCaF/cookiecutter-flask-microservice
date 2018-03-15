@@ -17,7 +17,7 @@ qa: test flake8 isort license
 
 ## Run the tests
 test:
-	docker-compose run --rm web pytest --cov={{cookiecutter.project_module}} tests
+	docker-compose run --rm -e ENVIRONMENT=testing web pytest --cov={{cookiecutter.project_module}} tests
 
 ## Run flake8
 flake8:

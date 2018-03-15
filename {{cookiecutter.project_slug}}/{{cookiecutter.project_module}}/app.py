@@ -22,9 +22,6 @@ from flask import Flask
 from flask_restplus import Api
 from flask_cors import CORS
 
-from {{cookiecutter.project_module}} import resources
-from {{cookiecutter.project_module}} import settings
-
 
 app = Flask(__name__)
 api = Api(
@@ -37,13 +34,28 @@ api = Api(
 
 def init_app(application, interface):
     if os.environ["ENVIRONMENT"] == "production":
-        application.config.from_object(settings.Production)
+        from {{cookiecutter.project_module}}.settings import Production
+        application.config.from_object(Production())
     elif os.environ["ENVIRONMENT"] == "testing":
-        application.config.from_object(settings.Testing)
+        from {{cookiecutter.project_module}}.settings import Testing
+        application.config.from_object(Testing())
     else:
-        application.config.from_object(settings.Development)
-    logging.basicConfig(level=application.config['LOGLEVEL'],
-                        format='[%(levelname)s - %(name)s] %(message)s')
-    CORS(application)
+        from {{cookiecutter.project_module}}.settings import Development
+        application.config.from_object(Development())
+    # Configure the logger and handler.
+    application.logger.setLevel(application.config["LOGLEVEL"])
+    formatter = logging.Formatter("[%(levelname)s] [%(name)s] %(message)s")
+    for handler in application.logger.handlers:
+        handler.setFormatter(formatter)
+    # Set the logging level and add handlers to desired packages here.
+    # FIXME: Remove those that are too spammy and uninteresting.
+    cors_logger = logging.getLogger("flask_cors")
+    cors_logger.setLevel(application.config["LOGLEVEL"])
+    for handler in application.logger.handlers:
+        cors_logger.addHandler(handler)
+    # Add routes and resources.
+    from {{cookiecutter.project_module}} import resources
     interface.add_resource(resources.HelloWorld, "/")
     interface.init_app(application)
+    # Add CORS information for all resources.
+    CORS(application)

@@ -15,15 +15,13 @@
 
 """Implement RESTful API endpoints using resources."""
 
-import logging
-
 from flask_restplus import Resource
 
-
-LOGGER = logging.getLogger(__name__)
+from {{cookiecutter.project_module}}.app import app
 
 
 class HelloWorld(Resource):
     def get(self):
         """Shout out loud."""
+        app.logger.debug("I ran!")
         return "Hello World!"

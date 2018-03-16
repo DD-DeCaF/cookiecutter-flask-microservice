@@ -21,12 +21,14 @@ import os
 __all__ = ("Development", "Testing", "Production")
 
 
-class Default:
+class Default(object):
 
-    DEBUG = True
-    SECRET_KEY = os.urandom(24)
-    LOGLEVEL = "DEBUG"
-    CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(",")
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.DEBUG = True
+        self.SECRET_KEY = os.urandom(24)
+        self.LOGLEVEL = "DEBUG"
+        self.CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(",")
 
 
 class Development(Default):
@@ -39,6 +41,8 @@ class Testing(Default):
 
 class Production(Default):
 
-    DEBUG = False
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    LOGLEVEL = "INFO"
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.DEBUG = False
+        self.SECRET_KEY = os.environ['SECRET_KEY']
+        self.LOGLEVEL = "INFO"

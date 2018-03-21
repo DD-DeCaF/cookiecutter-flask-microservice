@@ -7,10 +7,15 @@ name = "pypi"
 
 [packages]
 
+Flask = "*"
+Flask-Cors = "*"
+flask-restplus = "*"
+gunicorn = "*"
+gevent = "*"
+
 
 [dev-packages]
 
-versioneer = "*"
 tox = "*"
 detox = "*"
 flake8 = "*"

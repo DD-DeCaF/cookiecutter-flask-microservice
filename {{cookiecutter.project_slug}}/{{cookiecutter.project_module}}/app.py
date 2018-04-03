@@ -28,7 +28,6 @@ api = Api(
     title="{{cookiecutter.project_name}} API",
     version="0.1.0",
     description="{{cookiecutter.project_short_description}}",
-    doc="/docs"  # FIXME: Should be disabled in production.
 )
 
 

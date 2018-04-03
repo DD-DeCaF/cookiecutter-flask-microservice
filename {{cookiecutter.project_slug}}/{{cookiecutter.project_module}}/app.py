@@ -42,20 +42,24 @@ def init_app(application, interface):
     else:
         from {{cookiecutter.project_module}}.settings import Development
         application.config.from_object(Development())
+
     # Configure the logger and handler.
     application.logger.setLevel(application.config["LOGLEVEL"])
     formatter = logging.Formatter("[%(levelname)s] [%(name)s] %(message)s")
     for handler in application.logger.handlers:
         handler.setFormatter(formatter)
+
     # Set the logging level and add handlers to desired packages here.
     # FIXME: Remove those that are too spammy and uninteresting.
     cors_logger = logging.getLogger("flask_cors")
     cors_logger.setLevel(application.config["LOGLEVEL"])
     for handler in application.logger.handlers:
         cors_logger.addHandler(handler)
+
     # Add routes and resources.
     from {{cookiecutter.project_module}} import resources
     interface.add_resource(resources.HelloWorld, "/")
     interface.init_app(application)
+
     # Add CORS information for all resources.
     CORS(application)

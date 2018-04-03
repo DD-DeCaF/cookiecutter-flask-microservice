@@ -25,7 +25,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(
-    title="{{cookiecutter.project_name}} API",
+    title="{{cookiecutter.project_name}}",
     version="0.1.0",
     description="{{cookiecutter.project_short_description}}",
     doc="/docs"  # FIXME: Should be disabled in production.

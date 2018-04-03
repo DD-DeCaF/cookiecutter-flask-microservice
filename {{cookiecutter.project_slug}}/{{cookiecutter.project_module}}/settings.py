@@ -29,6 +29,7 @@ class Default(object):
         self.SECRET_KEY = os.urandom(24)
         self.LOGLEVEL = "DEBUG"
         self.CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(",")
+        self.RESTPLUS_MASK_SWAGGER = False
 
 
 class Development(Default):

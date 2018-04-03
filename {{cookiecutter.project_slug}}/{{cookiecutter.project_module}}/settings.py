@@ -27,8 +27,32 @@ class Default(object):
         super().__init__(**kwargs)
         self.DEBUG = True
         self.SECRET_KEY = os.urandom(24)
-        self.LOGLEVEL = "DEBUG"
         self.CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(",")
+        self.LOGGING = {
+            'version': 1,
+            'disable_existing_loggers': False,
+            'formatters': {
+                'simple': {
+                    'format': "[%(levelname)s] [%(name)s] %(message)s",
+                },
+            },
+            'handlers': {
+                'console': {
+                    'level': 'DEBUG',
+                    'class': 'logging.StreamHandler',
+                    'formatter': 'simple',
+                },
+            },
+            'loggers': {
+                # All loggers will by default use the root logger below (and
+                # hence be very verbose). To silence spammy/uninteresting log
+                # output, add the loggers here and increase the loglevel.
+            },
+            'root': {
+                'level': 'DEBUG',
+                'handlers': ['console'],
+            },
+        }
 
 
 class Development(Default):
@@ -45,4 +69,4 @@ class Production(Default):
         super().__init__(**kwargs)
         self.DEBUG = False
         self.SECRET_KEY = os.environ['SECRET_KEY']
-        self.LOGLEVEL = "INFO"
+        self.LOGGING['root']['level'] = 'INFO'

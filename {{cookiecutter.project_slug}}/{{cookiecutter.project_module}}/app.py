@@ -42,18 +42,12 @@ def init_app(application, interface):
         from {{cookiecutter.project_module}}.settings import Development
         application.config.from_object(Development())
 
-    # Configure the logger and handler.
-    application.logger.setLevel(application.config["LOGLEVEL"])
-    formatter = logging.Formatter("[%(levelname)s] [%(name)s] %(message)s")
-    for handler in application.logger.handlers:
-        handler.setFormatter(formatter)
-
-    # Set the logging level and add handlers to desired packages here.
-    # FIXME: Remove those that are too spammy and uninteresting.
-    cors_logger = logging.getLogger("flask_cors")
-    cors_logger.setLevel(application.config["LOGLEVEL"])
-    for handler in application.logger.handlers:
-        cors_logger.addHandler(handler)
+    # Configure logging
+    # The flask logger, when created, disables existing loggers. The following
+    # statement ensures the flask logger is created, so that it doesn't disable
+    # our loggers later when it is first accessed.
+    application.logger
+    logging.config.dictConfig(application.config['LOGGING'])
 
     # Add routes and resources.
     from {{cookiecutter.project_module}} import resources

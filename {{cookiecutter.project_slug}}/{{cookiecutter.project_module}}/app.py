@@ -15,12 +15,14 @@
 
 """Expose the main Flask-RESTPlus application."""
 
+import logging
 import logging.config
 import os
 
 from flask import Flask
 from flask_restplus import Api
 from flask_cors import CORS
+from raven.contrib.flask import Sentry
 
 
 app = Flask(__name__)
@@ -48,6 +50,12 @@ def init_app(application, interface):
     # our loggers later when it is first accessed.
     application.logger
     logging.config.dictConfig(application.config['LOGGING'])
+
+    # Configure Sentry
+    if application.config['SENTRY_DSN']:
+        sentry = Sentry(dsn=application.config['SENTRY_DSN'], logging=True,
+                        level=logging.WARNING)
+        sentry.init_app(application)
 
     # Add routes and resources.
     from {{cookiecutter.project_module}} import resources

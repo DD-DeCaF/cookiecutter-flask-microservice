@@ -11,4 +11,5 @@ services:
     environment:
       - ENVIRONMENT=${ENVIRONMENT:-development}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost}
+      - SENTRY_DSN=${SENTRY_DSN}
     command: gunicorn -c gunicorn.py {{cookiecutter.project_slug}}.wsgi:app

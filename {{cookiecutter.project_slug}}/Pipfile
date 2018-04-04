@@ -12,6 +12,7 @@ flask-restplus = "*"
 Flask-Cors = "*"
 gunicorn = "*"
 gevent = "*"
+raven = {extras = ["flask"], version = "*"}
 
 
 [dev-packages]

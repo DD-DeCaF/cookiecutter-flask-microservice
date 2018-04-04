@@ -6,7 +6,7 @@
 
 ## Create the external network
 network:
-	docker network inspect iloop >/dev/null || docker network create iloop
+	docker network inspect {{cookiecutter.github_username}} >/dev/null || docker network create {{cookiecutter.github_username}}
 
 ## Install and start the service.
 start: network

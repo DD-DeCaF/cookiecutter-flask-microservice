@@ -8,11 +8,10 @@ name = "pypi"
 [packages]
 
 Flask = "*"
-flask-restplus = "*"
 Flask-Cors = "*"
+flask-restplus = "*"
 gunicorn = "*"
 gevent = "*"
-raven = {extras = ["flask"], version = "*"}
 
 
 [dev-packages]

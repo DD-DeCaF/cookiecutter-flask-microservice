@@ -8,3 +8,6 @@ before_install:
 install:
   - pipenv install --dev
 script: pytest
+notifications:
+  on_success: never
+  on_failure: always

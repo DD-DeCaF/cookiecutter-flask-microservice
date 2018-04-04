@@ -6,7 +6,7 @@
 
 ## Create the external network
 network:
-	docker network inspect decaf >/dev/null || docker network create decaf
+	docker network inspect {{cookiecutter.github_username}} >/dev/null || docker network create {{cookiecutter.github_username}}
 
 ## Install and start the service.
 start: network

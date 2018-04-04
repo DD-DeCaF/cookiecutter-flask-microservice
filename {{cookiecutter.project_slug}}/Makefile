@@ -6,7 +6,7 @@
 
 ## Create the external network
 network:
-	docker network inspect iloop >/dev/null || docker network create iloop
+	docker network inspect decaf >/dev/null || docker network create decaf
 
 ## Install and start the service.
 start: network

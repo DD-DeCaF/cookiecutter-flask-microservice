@@ -4,6 +4,5 @@
 !gunicorn.py
 !setup.cfg
 !Pipfile*
-!MANIFEST.in
 !pyproject.toml
 !tox.ini

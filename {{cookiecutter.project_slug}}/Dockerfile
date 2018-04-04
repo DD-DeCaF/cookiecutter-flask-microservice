@@ -6,7 +6,7 @@ ARG INSTALL_PATH=/app
 
 WORKDIR ${INSTALL_PATH}
 
-COPY Pipfile* ${INSTALL_PATH}/
+COPY . ${INSTALL_PATH}/
 
 # `g++` is required for building `gevent` but all build dependencies are
 # later removed again to reduce the layer size.

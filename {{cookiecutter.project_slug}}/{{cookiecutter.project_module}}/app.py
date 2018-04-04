@@ -15,7 +15,7 @@
 
 """Expose the main Flask-RESTPlus application."""
 
-import logging
+import logging.config
 import os
 
 from flask import Flask

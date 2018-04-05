@@ -4,8 +4,8 @@ ENV PYTHONUNBUFFERED 1
 
 ARG INSTALL_PATH=/app
 
-ARG UID
-ARG GID
+ARG UID=1000
+ARG GID=1000
 
 RUN addgroup -g ${GID} -S giraffe && \
     adduser -u ${UID} -S giraffe -G giraffe

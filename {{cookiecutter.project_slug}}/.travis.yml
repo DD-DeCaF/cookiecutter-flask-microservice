@@ -9,10 +9,10 @@ services:
   - docker
 
 before_install:
-  - pip install -U pip setuptools wheel
-  - pip install pipenv
+  - pip install -U pip setuptools wheel pipenv
 
 install:
+  - docker build .
   - pipenv install --dev --system
 
 script:

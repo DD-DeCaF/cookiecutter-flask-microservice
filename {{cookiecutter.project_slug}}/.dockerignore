@@ -4,5 +4,3 @@
 !configuration.py
 !setup.cfg
 !Pipfile*
-!pyproject.toml
-!tox.ini

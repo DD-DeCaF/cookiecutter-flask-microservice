@@ -16,8 +16,6 @@ gevent = "*"
 
 [dev-packages]
 
-tox = "*"
-detox = "*"
 flake8 = "*"
 pytest = "*"
 pytest-cov = "*"

@@ -1,49 +1,53 @@
-.PHONY: network start qa test flake8 isort isort-save license stop clean logs
+.PHONY: start qa test flake8 isort isort-save license stop clean logs
 
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
 
-## Create the external network
+## Create the docker bridge network if necessary.
 network:
 	docker network inspect {{cookiecutter.github_username}} >/dev/null || docker network create {{cookiecutter.github_username}}
 
-## Install and start the service.
-start: network
-	docker-compose up -d --build
+## Build local docker images.
+build: network
+	docker-compose build
 
-## Run all QA targets
+## Start all services in the background.
+start: build
+	docker-compose up -d
+
+## Run all QA targets.
 qa: test flake8 isort license
 
-## Run the tests
+## Run the tests.
 test:
-	docker-compose run --rm -e ENVIRONMENT=testing web pytest --cov={{cookiecutter.project_module}} tests
+	docker-compose run --rm -e ENVIRONMENT=testing web pytest -vs --cov={{cookiecutter.project_module}} tests
 
-## Run flake8
+## Run flake8.
 flake8:
 	docker-compose run --rm web flake8 {{cookiecutter.project_module}} tests
 
-## Check import sorting
+## Check Python package import order.
 isort:
 	docker-compose run --rm web isort --check-only --recursive {{cookiecutter.project_module}} tests
 
-## Sort imports and write changes to files
+## Sort imports and write changes to files.
 isort-save:
 	docker-compose run --rm web isort --recursive {{cookiecutter.project_module}} tests
 
-## Verify source code license headers
+## Verify source code license headers.
 license:
-	./scripts/verify_license_headers.sh {{cookiecutter.project_module}}
+	./scripts/verify_license_headers.sh {{cookiecutter.project_module}} tests
 
-## Shut down the Docker containers.
+## Stop all services.
 stop:
 	docker-compose stop
 
-## Remove all containers.
+## Stop all services and remove containers.
 clean:
 	docker-compose down
 
-## Read the logs.
+## Follow the logs.
 logs:
 	docker-compose logs --tail="all" -f
 

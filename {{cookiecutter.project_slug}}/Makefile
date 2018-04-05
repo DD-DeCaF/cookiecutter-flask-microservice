@@ -17,11 +17,14 @@ start: build
 	docker-compose up -d
 
 ## Run all QA targets.
-qa: test flake8 isort license
+qa: test style
+
+## Run all style related targets.
+style: flake8 isort license
 
 ## Run the tests.
 test:
-	docker-compose run --rm -e ENVIRONMENT=testing web pytest -vs --cov={{cookiecutter.project_module}} tests
+	docker-compose run --rm -e ENVIRONMENT=testing web /bin/sh -c "pytest -s --cov={{cookiecutter.project_module}} tests && codecov"
 
 ## Run flake8.
 flake8:

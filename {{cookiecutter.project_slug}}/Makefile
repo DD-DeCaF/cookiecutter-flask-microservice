@@ -1,20 +1,16 @@
-.PHONY: start qa test flake8 isort isort-save license stop clean logs
+.PHONY: network start qa test flake8 isort isort-save license stop clean logs
 
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
 
-## Create the external docker bridge network.
+## Create the external network
 network:
 	docker network inspect {{cookiecutter.github_username}} >/dev/null || docker network create {{cookiecutter.github_username}}
 
-## Build the web service image.
-build: network
-	UID=$$(id -u) GID=$$(id -g) docker-compose build
-
-## Start all services.
-start: build
-	docker-compose up -d
+## Install and start the service.
+start: network
+	docker-compose up -d --build
 
 ## Run all QA targets
 qa: test flake8 isort license
@@ -39,15 +35,15 @@ isort-save:
 license:
 	./scripts/verify_license_headers.sh {{cookiecutter.project_module}}
 
-## Stop all services.
+## Shut down the Docker containers.
 stop:
 	docker-compose stop
 
-## Stop all services and remove all containers.
+## Remove all containers.
 clean:
 	docker-compose down
 
-## Follow the logs.
+## Read the logs.
 logs:
 	docker-compose logs --tail="all" -f
 

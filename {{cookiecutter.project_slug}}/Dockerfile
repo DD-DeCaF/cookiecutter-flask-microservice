@@ -2,24 +2,27 @@ FROM python:3.6-alpine
 
 ENV PYTHONUNBUFFERED 1
 
-ARG INSTALL_PATH=/app
+ENV USER=giraffe
 
 ARG UID=1000
 ARG GID=1000
 
-RUN addgroup -g ${GID} -S giraffe && \
-    adduser -u ${UID} -S giraffe -G giraffe
+ARG INSTALL_PATH=/app
+
+RUN addgroup -g ${GID} -S ${USER} && \
+    adduser -u ${UID} -S ${USER} -G ${USER}
 
 WORKDIR ${INSTALL_PATH}
 
 COPY . ${INSTALL_PATH}/
 
+RUN chown -R ${USER}:${USER} ${INSTALL_PATH}
+
 # `g++` is required for building `gevent` but all build dependencies are
 # later removed again to reduce the layer size.
-RUN apk add --no-cache --virtual .build-deps g++ \
+RUN apk add --update --no-cache openssl ca-certificates \
+    && apk add --no-cache --virtual .build-deps g++ \
     && pip install pipenv \
     && pipenv install --dev --system --deploy \
     && rm -rf /root/.cache/pip \
     && apk del .build-deps
-
-USER giraffe

@@ -21,13 +21,9 @@ from {{cookiecutter.project_module}}.app import api, app, init_app
 
 
 @pytest.fixture(scope="session")
-def application():
+def client():
+    """Provide a Flask test client to be used by almost all test cases."""
     init_app(app, api)
-    with app.app_context():  # FIXME: Is this necessary?
-        yield app
-
-
-@pytest.fixture(scope="session")
-def client(application):
-    with application.test_client() as client:
-        yield client
+    with app.app_context():
+        with app.test_client() as client:
+            yield client

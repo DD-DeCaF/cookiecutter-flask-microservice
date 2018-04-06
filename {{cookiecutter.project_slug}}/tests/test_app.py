@@ -17,6 +17,7 @@
 
 
 def test_docs(client):
+    """Expect the OpenAPI docs to be served at root."""
     resp = client.get("/")
     assert resp.status_code == 200
     assert resp.content_type == "text/html; charset=utf-8"

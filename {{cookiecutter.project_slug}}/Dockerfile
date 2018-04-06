@@ -12,6 +12,8 @@ ARG INSTALL_PATH=/app
 RUN addgroup --gid "${GID}" --system "${USER}" && \
     adduser --uid "${UID}" --system --group "${USER}" "${USER}"
 
+RUN apk add --update --no-cache openssl ca-certificates
+
 WORKDIR "${INSTALL_PATH}"
 
 COPY . "${INSTALL_PATH}/"
@@ -20,8 +22,7 @@ RUN chown -R "${USER}:${USER}" "${INSTALL_PATH}"
 
 # `g++` is required for building `gevent` but all build dependencies are
 # later removed again to reduce the layer size.
-RUN apk add --update --no-cache openssl ca-certificates \
-    && apk add --no-cache --virtual .build-deps g++ \
+RUN apk add --no-cache --virtual .build-deps g++ \
     && pip install --upgrade pip setuptools wheel pipenv \
     && pipenv install --dev --system --deploy \
     && rm -rf /root/.cache/pip \

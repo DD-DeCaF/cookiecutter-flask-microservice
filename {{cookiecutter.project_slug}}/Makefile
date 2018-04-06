@@ -24,6 +24,10 @@ style: flake8 isort license
 
 ## Run the tests.
 test:
+	docker-compose run --rm -e ENVIRONMENT=testing web /bin/sh -c "pytest -s --cov={{cookiecutter.project_module}} tests"
+
+## Run the tests and report coverage.
+test-cov:
 	docker-compose run --rm -e ENVIRONMENT=testing web /bin/sh -c "pytest -s --cov={{cookiecutter.project_module}} tests && codecov"
 
 ## Run flake8.

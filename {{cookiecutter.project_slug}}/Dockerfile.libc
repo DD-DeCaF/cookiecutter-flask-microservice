@@ -1,0 +1,35 @@
+FROM python:3.6-slim
+
+ENV PYTHONUNBUFFERED=1
+
+ENV USER=giraffe
+
+ARG UID=1000
+ARG GID=1000
+
+ARG PWD=/app
+
+ENV PYTHONPATH=${PWD}
+
+RUN groupadd --system --gid "${GID}" "${USER}" \
+    && useradd --system --uid "${UID}" --gid "${USER}" "${USER}"
+
+WORKDIR "${PWD}"
+
+COPY . "${PWD}/"
+
+RUN chown -R "${USER}:${USER}" "${PWD}"
+
+# `g++` is required for building `gevent` but all build dependencies are
+# later removed again.
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends \
+        g++ \
+    && pip install --upgrade pip setuptools wheel pipenv \
+    && pipenv install --dev --system --deploy \
+    && rm -rf /root/.cache/pip \
+    && apt-get purge --yes g++ \
+    && apt-get autoremove --yes \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+

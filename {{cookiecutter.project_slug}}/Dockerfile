@@ -9,10 +9,12 @@ ARG GID=1000
 
 ARG INSTALL_PATH=/app
 
-RUN addgroup --gid "${GID}" --system "${USER}" && \
-    adduser --uid "${UID}" --system --group "${USER}" "${USER}"
+RUN addgroup -g "${GID}" -S "${USER}" && \
+    adduser -u "${UID}" -S -G "${USER}" "${USER}"
 
 RUN apk add --update --no-cache openssl ca-certificates
+
+ENV PYTHONPATH="${INSTALL_PATH}/src"
 
 WORKDIR "${INSTALL_PATH}"
 

@@ -30,7 +30,7 @@ deploy:
   script: ./scripts/push_to_hub.sh
   on:
     all_branches: true
-    condition: ${TARGET} = "test"
+    condition: ${TARGET} = "test-cov"
 
 notifications:
   email: false

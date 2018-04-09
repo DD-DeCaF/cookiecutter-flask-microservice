@@ -1,5 +1,6 @@
 *
 !src/
+!scripts/
 !tests/
 !gunicorn.py
 !setup.cfg

@@ -1,6 +1,5 @@
 sudo: required
-language: python
-python: "3.6"
+language: minimal
 
 git:
   depth: 2
@@ -8,22 +7,22 @@ git:
 services:
   - docker
 
-before_install:
-  - pip install -U pip setuptools wheel
-  - pip install pipenv
+env:
+  - TARGET=test-cov
+  - TARGET=flake8
+  - TARGET=isort
+  - TARGET=license
+
+matrix:
+  fast_finish: true
 
 install:
-  - pipenv install --dev --system
+  - make build
 
 script:
-  - py.test -vxs --cov={{cookiecutter.project_slug}} tests
-  - flake8 {{cookiecutter.project_slug}} tests
-  - isort --check-only --recursive {{cookiecutter.project_slug}} tests
-  - ./scripts/verify_license_headers.sh {{cookiecutter.project_slug}}
-  - docker build .
+  - make ${TARGET}
 
-after_success:
-  - codecov
+before_deploy:
   - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
 
 deploy:
@@ -31,7 +30,13 @@ deploy:
   script: ./scripts/push_to_hub.sh
   on:
     all_branches: true
+    condition: ${TARGET} = "test-cov"
 
 notifications:
-  on_success: never
-  on_failure: always
+  email: false
+  slack:
+    rooms:
+      - ${SLACK_ACCOUNT}:${SLACK_TOKEN}#${SLACK_CHANNEL}
+    on_success: never
+    on_failure: always
+    on_pull_requests: false

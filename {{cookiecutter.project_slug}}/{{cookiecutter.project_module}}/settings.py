@@ -22,8 +22,16 @@ __all__ = ("Development", "Testing", "Production")
 
 
 class Default(object):
+    """Set the default configuration for all environments."""
 
     def __init__(self, **kwargs):
+        """
+        Initialize the default configuration.
+
+        We chose configuration by instances in order to avoid ``KeyError``s
+        from environments that are not active but access
+        ``os.environ.__getitem__``.
+        """
         super().__init__(**kwargs)
         self.DEBUG = True
         self.SECRET_KEY = os.urandom(24)
@@ -58,16 +66,27 @@ class Default(object):
 
 
 class Development(Default):
+    """Development environment configuration."""
+
     pass
 
 
 class Testing(Default):
+    """Testing environment configuration."""
+
     pass
 
 
 class Production(Default):
+    """Production environment configuration."""
 
     def __init__(self, **kwargs):
+        """
+        Initialize the production environment configuration.
+
+        Require a secret key to be defined and make logging slightly less
+        verbose.
+        """
         super().__init__(**kwargs)
         self.DEBUG = False
         self.SECRET_KEY = os.environ['SECRET_KEY']

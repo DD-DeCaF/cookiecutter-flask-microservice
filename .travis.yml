@@ -1,5 +1,7 @@
 language: python
 python: "3.6"
+git:
+  depth: 2
 branches:
   - master
 before_install:

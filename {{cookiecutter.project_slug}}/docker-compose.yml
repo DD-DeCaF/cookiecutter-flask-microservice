@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - "./:/app"
+      - "./src/:/app/src/"
     environment:
       - ENVIRONMENT=${ENVIRONMENT:-development}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost}

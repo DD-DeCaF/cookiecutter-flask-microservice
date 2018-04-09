@@ -1,5 +1,5 @@
 *
-!{{cookiecutter.project_slug}}/
+!src/
 !tests/
 !configuration.py
 !setup.cfg

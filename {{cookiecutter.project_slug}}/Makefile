@@ -6,7 +6,7 @@
 
 ## Create the docker bridge network if necessary.
 network:
-	docker network inspect {{cookiecutter.github_username}} >/dev/null || \
+	docker network inspect {{cookiecutter.github_username}} >/dev/null 2>&1 || \
 		docker network create {{cookiecutter.github_username}}
 
 ## Build local docker images.

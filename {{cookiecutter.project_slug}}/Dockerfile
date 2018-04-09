@@ -2,7 +2,7 @@ FROM python:3.6-alpine3.7
 
 ENV PYTHONUNBUFFERED=1
 
-ENV USER=giraffe
+ENV APP_USER=giraffe
 
 ARG UID=1000
 ARG GID=1000
@@ -11,8 +11,8 @@ ARG CWD=/app
 
 ENV PYTHONPATH=${CWD}/src
 
-RUN addgroup -g "${GID}" -S "${USER}" && \
-    adduser -u "${UID}" -G "${USER}" -S "${USER}"
+RUN addgroup -g "${GID}" -S "${APP_USER}" && \
+    adduser -u "${UID}" -G "${APP_USER}" -S "${APP_USER}"
 
 RUN apk add --update --no-cache openssl ca-certificates
 
@@ -34,4 +34,4 @@ RUN set -x \
 
 COPY . "${CWD}/"
 
-RUN chown -R "${USER}:${USER}" "${CWD}"
+RUN chown -R "${APP_USER}:${APP_USER}" "${CWD}"

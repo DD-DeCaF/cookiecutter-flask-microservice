@@ -12,15 +12,13 @@ ARG CWD=/app
 ENV PYTHONPATH=${CWD}/src
 
 RUN addgroup -g "${GID}" -S "${USER}" && \
-    adduser -u "${UID}" -S -G "${USER}" "${USER}"
+    adduser -u "${UID}" -G "${USER}" -S "${USER}"
 
 RUN apk add --update --no-cache openssl ca-certificates
 
 WORKDIR "${CWD}"
 
-COPY . "${CWD}/"
-
-RUN chown -R "${USER}:${USER}" "${CWD}"
+COPY Pipfile* "${CWD}/"
 
 # `g++` is required for building `gevent` but all build dependencies are
 # later removed again to reduce the layer size.
@@ -34,3 +32,6 @@ RUN set -x \
     && rm -rf /root/.cache/pip \
     && apk del .build-deps
 
+COPY . "${CWD}/"
+
+RUN chown -R "${USER}:${USER}" "${CWD}"

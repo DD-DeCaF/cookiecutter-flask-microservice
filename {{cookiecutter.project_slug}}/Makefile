@@ -13,7 +13,7 @@ build: network
 	docker-compose build
 
 ## Start all services in the background.
-start: build
+start:
 	docker-compose up -d
 
 ## Run all QA targets.

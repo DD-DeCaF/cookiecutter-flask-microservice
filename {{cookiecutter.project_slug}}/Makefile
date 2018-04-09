@@ -30,9 +30,9 @@ test:
 
 ## Run the tests and report coverage.
 test-travis:
-	docker-compose run --rm -e ENVIRONMENT=testing \
-		-e $$(printenv | egrep "^CI$|^TRAVIS$|^TRAVIS_" ) web \
-		pytest --cov=src/{{cookiecutter.project_module}} tests && codecov
+	printenv | egrep "^CI$|^TRAVIS$|^TRAVIS_" > travis.env
+	docker-compose run --rm -e ENVIRONMENT=testing --env-file travis.env web \
+		/bin/sh -c "pytest --cov=src/{{cookiecutter.project_module}} tests && codecov"
 
 ## Run flake8.
 flake8:

@@ -8,44 +8,45 @@ services:
   - docker
 
 env:
-  - TARGET=test-travis
-  - TARGET=flake8
-  - TARGET=isort
-  - TARGET=license
+  global:
+    - IMAGE_TAG=travis-ci
+  matrix:
+    - TARGET=test-travis
+    - TARGET=flake8
+    - TARGET=isort
+    - TARGET=license
 
 matrix:
   fast_finish: true
 
+before_script:
+  - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
+  - make network
+
+script:
+  - docker pull {{cookiecutter.github_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
+  - make ${TARGET}
+
 stages:
   - build
   - test
-  - deploy
+  - name: deploy
+    if: branch = master
 
 jobs:
   include:
     - stage: build
-      before_script:
-        - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
       script:
         - make build
         - docker images
-        - docker push ${DOCKER_USERNAME}/tag
+        - docker push {{cookiecutter.github_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
     - stage: test
-      before_script:
-        - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
-      script:
-        - docker pull ${DOCKER_USERNAME}/tag
-        - make ${TARGET}
     - stage: deploy
-      before_script:
-        - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
       script:
-        - docker pull ${DOCKER_USERNAME}/tag
+        - docker pull {{cookiecutter.github_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
       deploy:
         provider: script
         script: ./scripts/push_to_hub.sh
-        on:
-          branch: master
 
 notifications:
   email: false

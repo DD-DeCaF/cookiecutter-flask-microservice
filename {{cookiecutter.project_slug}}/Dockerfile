@@ -9,7 +9,7 @@ ARG GID=1000
 
 ARG CWD=/app
 
-ENV PYTHONPATH=${INSTALL_PATH}
+ENV PYTHONPATH=${CWD}
 
 RUN addgroup -g "${GID}" -S "${USER}" && \
     adduser -u "${UID}" -S -G "${USER}" "${USER}"

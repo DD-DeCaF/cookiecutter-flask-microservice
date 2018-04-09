@@ -6,7 +6,8 @@
 
 ## Create the docker bridge network if necessary.
 network:
-	docker network inspect {{cookiecutter.github_username}} >/dev/null || docker network create {{cookiecutter.github_username}}
+	docker network inspect {{cookiecutter.github_username}} >/dev/null || \
+		docker network create {{cookiecutter.github_username}}
 
 ## Build local docker images.
 build: network
@@ -25,28 +26,28 @@ style: flake8 isort license
 ## Run the tests.
 test:
 	docker-compose run --rm -e ENVIRONMENT=testing web \
-	/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests"
+		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests"
 
 ## Run the tests and report coverage.
 test-travis:
 	docker-compose run --rm -e ENVIRONMENT=testing \
-	-e $$(printenv | egrep "^CI$|^TRAVIS$|^TRAVIS_" ) web \
-	pytest --cov=src/{{cookiecutter.project_module}} tests && codecov
+		-e $$(printenv | egrep "^CI$|^TRAVIS$|^TRAVIS_" ) web \
+		pytest --cov=src/{{cookiecutter.project_module}} tests && codecov
 
 ## Run flake8.
 flake8:
 	docker-compose run --rm web \
-	flake8 src/{{cookiecutter.project_module}} tests
+		flake8 src/{{cookiecutter.project_module}} tests
 
 ## Check Python package import order.
 isort:
 	docker-compose run --rm web \
-	isort --check-only --recursive src/{{cookiecutter.project_module}} tests
+		isort --check-only --recursive src/{{cookiecutter.project_module}} tests
 
 ## Sort imports and write changes to files.
 isort-save:
 	docker-compose run --rm web \
-	isort --recursive src/{{cookiecutter.project_module}} tests
+		isort --recursive src/{{cookiecutter.project_module}} tests
 
 ## Verify source code license headers.
 license:

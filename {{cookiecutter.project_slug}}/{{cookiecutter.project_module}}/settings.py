@@ -22,7 +22,7 @@ __all__ = ("Development", "Testing", "Production")
 
 
 class Default(object):
-    """Base configuration class."""
+    """Set the default configuration for all environments."""
 
     def __init__(self, **kwargs):
         """
@@ -81,6 +81,12 @@ class Production(Default):
     """Production environment configuration."""
 
     def __init__(self, **kwargs):
+        """
+        Initialize the production environment configuration.
+
+        Require a secret key to be defined and make logging slightly less
+        verbose.
+        """
         super().__init__(**kwargs)
         self.DEBUG = False
         self.SECRET_KEY = os.environ['SECRET_KEY']

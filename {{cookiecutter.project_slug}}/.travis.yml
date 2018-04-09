@@ -8,7 +8,7 @@ services:
   - docker
 
 env:
-  - TARGET=test-cov
+  - TARGET=test-travis
   - TARGET=flake8
   - TARGET=isort
   - TARGET=license
@@ -16,21 +16,36 @@ env:
 matrix:
   fast_finish: true
 
-install:
-  - make build
+stages:
+  - build
+  - test
+  - deploy
 
-script:
-  - make ${TARGET}
-
-before_deploy:
-  - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
-
-deploy:
-  provider: script
-  script: ./scripts/push_to_hub.sh
-  on:
-    all_branches: true
-    condition: ${TARGET} = "test-cov"
+jobs:
+  include:
+    - stage: build
+      before_script:
+        - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
+      script:
+        - make build
+        - docker images
+        - docker push ${DOCKER_USERNAME}/tag
+    - stage: test
+      before_script:
+        - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
+      script:
+        - docker pull ${DOCKER_USERNAME}/tag
+        - make ${TARGET}
+    - stage: deploy
+      before_script:
+        - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
+      script:
+        - docker pull ${DOCKER_USERNAME}/tag
+      deploy:
+        provider: script
+        script: ./scripts/push_to_hub.sh
+        on:
+          branch: master
 
 notifications:
   email: false

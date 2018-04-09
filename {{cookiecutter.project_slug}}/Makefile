@@ -24,27 +24,33 @@ style: flake8 isort license
 
 ## Run the tests.
 test:
-	docker-compose run --rm -e ENVIRONMENT=testing web /bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests"
+	docker-compose run --rm -e ENVIRONMENT=testing web \
+	/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests"
 
 ## Run the tests and report coverage.
-test-cov:
-	docker-compose run --rm -e ENVIRONMENT=testing web pytest --cov=src/{{cookiecutter.project_module}} tests
+test-travis:
+	docker-compose run --rm -e ENVIRONMENT=testing \
+	-e $$(printenv | egrep "^CI$|^TRAVIS$|^TRAVIS_" ) web \
+	pytest --cov=src/{{cookiecutter.project_module}} tests && codecov
 
 ## Run flake8.
 flake8:
-	docker-compose run --rm web flake8 src/{{cookiecutter.project_module}} tests
+	docker-compose run --rm web \
+	flake8 src/{{cookiecutter.project_module}} tests
 
 ## Check Python package import order.
 isort:
-	docker-compose run --rm web isort --check-only --recursive src/{{cookiecutter.project_module}} tests
+	docker-compose run --rm web \
+	isort --check-only --recursive src/{{cookiecutter.project_module}} tests
 
 ## Sort imports and write changes to files.
 isort-save:
-	docker-compose run --rm web isort --recursive src/{{cookiecutter.project_module}} tests
+	docker-compose run --rm web \
+	isort --recursive src/{{cookiecutter.project_module}} tests
 
 ## Verify source code license headers.
 license:
-	./scripts/verify_license_headers.sh src/{{cookiecutter.project_module}}
+	./scripts/verify_license_headers.sh src/{{cookiecutter.project_module}} tests
 
 ## Stop all services.
 stop:

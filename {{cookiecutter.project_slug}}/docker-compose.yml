@@ -6,10 +6,12 @@ services:
       dockerfile: Dockerfile
     image: {{cookiecutter.github_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG:-latest}
     networks:
-      - {{cookiecutter.github_username}}
-      - default
+      default:
+      {{cookiecutter.github_username}}:
+        aliases:
+          - {{cookiecutter.project_slug}}
     ports:
-      - "8000:8000"
+      - "${API_PORT:-8000}:8000"
     volumes:
       - ".:/app"
     environment:
@@ -17,6 +19,11 @@ services:
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:*}
       - SENTRY_DSN=${SENTRY_DSN}
     command: gunicorn -c gunicorn.py {{cookiecutter.project_module}}.wsgi:app
+
+# Additional services that the `web` service `depends_on` should usually only
+# be on the default network and not exposed on the general network, i.e.,
+# networks:
+#   - default
 
 networks:
   {{cookiecutter.github_username}}:

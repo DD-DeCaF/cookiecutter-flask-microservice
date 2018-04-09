@@ -7,18 +7,18 @@ ENV USER=giraffe
 ARG UID=1000
 ARG GID=1000
 
-ARG PWD=/app
+ARG CWD=/app
 
 RUN addgroup -g "${GID}" -S "${USER}" && \
     adduser -u "${UID}" -S -G "${USER}" "${USER}"
 
 RUN apk add --update --no-cache openssl ca-certificates
 
-WORKDIR "${PWD}"
+WORKDIR "${CWD}"
 
-COPY . "${PWD}/"
+COPY . "${CWD}/"
 
-RUN chown -R "${USER}:${USER}" "${PWD}"
+RUN chown -R "${USER}:${USER}" "${CWD}"
 
 # `g++` is required for building `gevent` but all build dependencies are
 # later removed again to reduce the layer size.

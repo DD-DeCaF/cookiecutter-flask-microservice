@@ -30,7 +30,7 @@ test:
 
 ## Run the tests and report coverage.
 test-travis:
-	printenv | egrep "^CI$|^TRAVIS$|^TRAVIS_" > travis.env
+	printenv | egrep "^CI$$|^TRAVIS$$|^TRAVIS_" > travis.env
 	docker-compose run --rm -e ENVIRONMENT=testing --env-file travis.env web \
 		/bin/sh -c "pytest --cov=src/{{cookiecutter.project_module}} tests && codecov"
 

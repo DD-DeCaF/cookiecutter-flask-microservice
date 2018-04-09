@@ -1,6 +1,7 @@
 .PHONY: start qa test flake8 isort isort-save license stop clean logs
+SHELL:=/bin/bash
 
-#################################################################################
+###############################################################################o #
 # COMMANDS                                                                      #
 #################################################################################
 
@@ -28,11 +29,11 @@ test:
 	docker-compose run --rm -e ENVIRONMENT=testing web \
 		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests"
 
-## Run the tests and report coverage.
+## Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
 test-travis:
-	printenv | egrep "^CI$$|^TRAVIS$$|^TRAVIS_" > travis.env
-	docker-compose run --rm -e ENVIRONMENT=testing --env-file travis.env web \
-		/bin/sh -c "pytest --cov=src/{{cookiecutter.project_module}} tests && codecov"
+	$(eval ci_env=$(shell bash <(curl -s https://codecov.io/env)))
+	docker-compose run --rm -e ENVIRONMENT=testing $(ci_env)  web \
+		/bin/sh -c "pytest -s --cov=src/foo_bar tests && codecov"
 
 ## Run flake8.
 flake8:

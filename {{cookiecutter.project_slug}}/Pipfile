@@ -12,10 +12,10 @@ gevent = "*"
 raven = {version = "*", extras = ["flask"]}
 
 [dev-packages]
-flake8 = "*"
 pytest = "*"
 pytest-cov = "*"
 codecov = "*"
+flake8 = "*"
 isort = "*"
 
 [requires]

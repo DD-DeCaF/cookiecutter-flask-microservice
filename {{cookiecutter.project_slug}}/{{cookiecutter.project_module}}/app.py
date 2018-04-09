@@ -34,6 +34,7 @@ api = Api(
 
 
 def init_app(application, interface):
+    """Initialize the main app with config information and routes."""
     if os.environ["ENVIRONMENT"] == "production":
         from {{cookiecutter.project_module}}.settings import Production
         application.config.from_object(Production())

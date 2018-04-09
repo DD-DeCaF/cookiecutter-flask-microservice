@@ -17,5 +17,5 @@
 
 
 def test_mode(application):
-    """Ensure app is in testing mode."""
+    """Ensure that the app is in testing mode."""
     assert application.testing

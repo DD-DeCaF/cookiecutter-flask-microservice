@@ -22,8 +22,16 @@ __all__ = ("Development", "Testing", "Production")
 
 
 class Default(object):
+    """Base configuration class."""
 
     def __init__(self, **kwargs):
+        """
+        Initialize the default configuration.
+
+        We chose configuration by instances in order to avoid ``KeyError``s
+        from environments that are not active but access
+        ``os.environ.__getitem__``.
+        """
         super().__init__(**kwargs)
         self.DEBUG = True
         self.SECRET_KEY = os.urandom(24)
@@ -58,14 +66,19 @@ class Default(object):
 
 
 class Development(Default):
+    """Development environment configuration."""
+
     pass
 
 
 class Testing(Default):
+    """Testing environment configuration."""
+
     pass
 
 
 class Production(Default):
+    """Production environment configuration."""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

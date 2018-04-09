@@ -13,21 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Provide session level fixtures."""
-
-import pytest
-
-from {{cookiecutter.project_module}}.app import api, app, init_app
+"""Test expected functioning of the OpenAPI docs endpoints."""
 
 
-@pytest.fixture(scope="session")
-def application():
-    init_app(app, api)
-    return app
-
-
-@pytest.fixture(scope="session")
-def client(application):
-    """Provide a Flask test client to be used by almost all test cases."""
-    with application.test_client() as client:
-        yield client
+def test_docs(client):
+    """Expect the OpenAPI docs to be served at root."""
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert resp.content_type == "text/html; charset=utf-8"

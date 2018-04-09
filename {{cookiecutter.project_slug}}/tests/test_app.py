@@ -16,8 +16,6 @@
 """Test expected functioning of the main app."""
 
 
-def test_docs(client):
-    """Expect the OpenAPI docs to be served at root."""
-    resp = client.get("/")
-    assert resp.status_code == 200
-    assert resp.content_type == "text/html; charset=utf-8"
+def test_mode(application):
+    """Ensure app is in testing mode."""
+    assert application.testing

@@ -7,9 +7,9 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - "./src/:/app/src/"
+      - ".:/app"
     environment:
       - ENVIRONMENT=${ENVIRONMENT:-development}
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:*}
       - SENTRY_DSN=${SENTRY_DSN}
-    command: gunicorn -c configuration.py {{cookiecutter.project_slug}}.wsgi:app
+    command: gunicorn -c gunicorn.py {{cookiecutter.project_slug}}.wsgi:app

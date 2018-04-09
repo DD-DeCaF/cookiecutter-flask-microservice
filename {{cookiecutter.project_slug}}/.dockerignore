@@ -1,6 +1,6 @@
 *
 !src/
 !tests/
-!configuration.py
+!gunicorn.py
 !setup.cfg
 !Pipfile*

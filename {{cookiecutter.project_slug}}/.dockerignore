@@ -1,7 +1,7 @@
 *
 !{{cookiecutter.project_slug}}/
 !tests/
-!gunicorn.py
+!configuration.py
 !setup.cfg
 !Pipfile*
 !pyproject.toml

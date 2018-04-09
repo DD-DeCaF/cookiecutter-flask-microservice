@@ -5,6 +5,9 @@ services:
       context: .
       dockerfile: Dockerfile
     image: {{cookiecutter.github_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG:-latest}
+    networks:
+      - {{cookiecutter.github_username}}
+      - default
     ports:
       - "8000:8000"
     volumes:
@@ -14,3 +17,7 @@ services:
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:*}
       - SENTRY_DSN=${SENTRY_DSN}
     command: gunicorn -c gunicorn.py {{cookiecutter.project_module}}.wsgi:app
+
+networks:
+  {{cookiecutter.github_username}}:
+    external: true

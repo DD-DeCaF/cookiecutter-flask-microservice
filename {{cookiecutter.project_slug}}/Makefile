@@ -1,10 +1,13 @@
-.PHONY: network build start qa style test test-travis flake8 isort isort-save \
-		license stop clean logs
+.PHONY: setup network build start qa style test test-travis flake8 isort \
+		isort-save license stop clean logs
 SHELL:=/bin/bash
 
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
+
+## Run all initialization targets.
+setup: build
 
 ## Create the docker bridge network if necessary.
 network:

@@ -25,7 +25,8 @@ Perform the following steps after creating a new service from the cookiecutter.
 
 ## Development
 
-Type `make` to see all commands.
+Run `make setup` first when initializing the project for the first time. Type
+`make` to see all commands.
 
 ### Environment
 

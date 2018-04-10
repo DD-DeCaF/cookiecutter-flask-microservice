@@ -26,7 +26,7 @@ style: flake8 isort license
 
 ## Run the tests.
 test:
-	docker-compose run --rm -e ENVIRONMENT=testing web \
+	-docker-compose run --rm -e ENVIRONMENT=testing web \
 		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests"
 
 ## Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
@@ -37,12 +37,12 @@ test-travis:
 
 ## Run flake8.
 flake8:
-	docker-compose run --rm web \
+	-docker-compose run --rm web \
 		flake8 src/{{cookiecutter.project_module}} tests
 
 ## Check Python package import order.
 isort:
-	docker-compose run --rm web \
+	-docker-compose run --rm web \
 		isort --check-only --recursive src/{{cookiecutter.project_module}} tests
 
 ## Sort imports and write changes to files.
@@ -52,7 +52,7 @@ isort-save:
 
 ## Verify source code license headers.
 license:
-	./scripts/verify_license_headers.sh src/{{cookiecutter.project_module}} tests
+	-./scripts/verify_license_headers.sh src/{{cookiecutter.project_module}} tests
 
 ## Stop all services.
 stop:

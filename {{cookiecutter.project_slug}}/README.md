@@ -16,6 +16,7 @@ Perform the following steps after creating a new service from the cookiecutter.
 
 * Create the following environment variables in Travis CI:
   * `ENVIRONMENT`: `testing`
+  * `FLASK_APP`: `src/{{cookiecutter.project_module}}/wsgi.py`
   * `SLACK_ACCOUNT`: Workspace name, e.g. `biosustain`
   * `SLACK_TOKEN`: [Find it here](https://biosustain.slack.com/services/B8D8VKW3W)
   * `SLACK_CHANNEL`: Normally `#decaf-notifications`

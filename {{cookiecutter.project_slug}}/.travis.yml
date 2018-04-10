@@ -45,8 +45,8 @@ jobs:
       deploy:
         provider: script
         script:
-         - docker tag ${IMAGE_TAG} {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${TRAVIS_COMMIT::12}
-         - docker tag ${IMAGE_TAG} {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${TRAVIS_BRANCH}
+         - docker tag {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG} {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${TRAVIS_COMMIT::12}
+         - docker tag {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG} {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${TRAVIS_BRANCH}
          - docker push {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${TRAVIS_COMMIT::12}
          - docker push {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${TRAVIS_BRANCH}
 

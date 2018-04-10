@@ -17,8 +17,9 @@
 
 import pytest
 
-from {{cookiecutter.project_module}}.app import api, init_app
+from {{cookiecutter.project_module}}.app import api
 from {{cookiecutter.project_module}}.app import app as app_
+from {{cookiecutter.project_module}}.app import init_app
 
 
 @pytest.fixture(scope="session")

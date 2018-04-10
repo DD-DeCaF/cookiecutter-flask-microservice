@@ -37,7 +37,7 @@ jobs:
   include:
     - stage: build
       script:
-        - make build
+        - make build-travis
         - docker push {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
     - stage: deploy
       script:

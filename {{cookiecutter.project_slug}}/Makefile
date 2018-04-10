@@ -18,6 +18,10 @@ network:
 build: network
 	docker-compose build
 
+## Build local docker images for deployment.
+build-travis:
+	docker-compose build --build-arg PIPENV_CMD="pipenv install --dev --system --deploy"
+
 ## Start all services in the background.
 start:
 	docker-compose up -d

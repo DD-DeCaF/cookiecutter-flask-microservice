@@ -44,7 +44,11 @@ jobs:
         - docker pull {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
       deploy:
         provider: script
-        script: ./scripts/push_to_hub.sh
+        script:
+         - docker tag ${IMAGE_TAG} {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${TRAVIS_COMMIT::12}
+         - docker tag ${IMAGE_TAG} {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${TRAVIS_BRANCH}
+         - docker push {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${TRAVIS_COMMIT::12}
+         - docker push {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${TRAVIS_BRANCH}
 
 notifications:
   email: false

@@ -10,6 +10,16 @@
 [![devel Codecov](https://codecov.io/gh/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/branch/devel/graph/badge.svg)](https://codecov.io/gh/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/branch/devel)
 [![devel Requirements Status](https://requires.io/github/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/requirements.svg?branch=devel)](https://requires.io/github/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/requirements/?branch=devel)
 
+## Post-cookiecutter steps
+
+Perform the following steps after creating a new service from the cookiecutter.
+
+* Create the following environment variables in Travis CI for Slack notifications:
+  * `SLACK_ACCOUNT`: Workspace name, e.g. `biosustain`
+  * `SLACK_TOKEN`: [Find it here](https://biosustain.slack.com/services/B8D8VKW3W)
+  * `SLACK_CHANNEL`: Normally `#decaf-notifications`
+* Remove this section from the README.
+
 ## Development
 
 Type `make` to see all commands.

@@ -1,4 +1,5 @@
-.PHONY: start qa test flake8 isort isort-save license stop clean logs
+.PHONY: network build start qa style test test-travis flake8 isort isort-save \
+		license stop clean logs
 SHELL:=/bin/bash
 
 ###############################################################################o #

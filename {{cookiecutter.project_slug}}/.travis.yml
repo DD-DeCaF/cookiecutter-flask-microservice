@@ -38,7 +38,6 @@ jobs:
     - stage: build
       script:
         - make build
-        - docker images
         - docker push {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
     - stage: test
     - stage: deploy

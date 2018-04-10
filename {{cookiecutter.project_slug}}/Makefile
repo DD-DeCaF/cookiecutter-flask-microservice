@@ -34,7 +34,7 @@ test:
 test-travis:
 	$(eval ci_env=$(shell bash <(curl -s https://codecov.io/env)))
 	docker-compose run --rm -e ENVIRONMENT=testing $(ci_env)  web \
-		/bin/sh -c "pytest -s --cov=src/foo_bar tests && codecov"
+		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests && codecov"
 
 ## Run flake8.
 flake8:

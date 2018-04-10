@@ -20,8 +20,7 @@ Perform the following steps after creating a new service from the cookiecutter.
   * `SLACK_ACCOUNT`: Workspace name, e.g. `biosustain`
   * `SLACK_TOKEN`: [Find it here](https://biosustain.slack.com/services/B8D8VKW3W)
   * `SLACK_CHANNEL`: Normally `#decaf-notifications`
-  * `DOCKER_USERNAME`: `decaftravis`, for push access to [Docker Hub](https://hub.docker.com/u/dddecaf/dashboard/)
-  * `DOCKER_PASSWORD`
+  * `DOCKER_PASSWORD`: For push access to [Docker Hub](https://hub.docker.com/u/dddecaf/dashboard/)
 * Remove this section from the README.
 
 ## Development

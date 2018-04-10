@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: {{cookiecutter.github_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG:-latest}
+    image: {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG:-latest}
     networks:
       default:
       {{cookiecutter.github_username}}:

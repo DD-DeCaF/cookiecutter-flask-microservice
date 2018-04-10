@@ -20,11 +20,11 @@ matrix:
   fast_finish: true
 
 before_script:
-  - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
+  - docker login -u={{cookiecutter.docker_username}} -p=${DOCKER_PASSWORD}
   - make network
 
 script:
-  - docker pull {{cookiecutter.github_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
+  - docker pull {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
   - make ${TARGET}
 
 stages:
@@ -39,11 +39,11 @@ jobs:
       script:
         - make build
         - docker images
-        - docker push {{cookiecutter.github_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
+        - docker push {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
     - stage: test
     - stage: deploy
       script:
-        - docker pull {{cookiecutter.github_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
+        - docker pull {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
       deploy:
         provider: script
         script: ./scripts/push_to_hub.sh

@@ -17,18 +17,19 @@
 
 import pytest
 
-from {{cookiecutter.project_module}}.app import api, app, init_app
+from {{cookiecutter.project_module}}.app import api, init_app
+from {{cookiecutter.project_module}}.app import app as app_
 
 
 @pytest.fixture(scope="session")
-def application():
+def app():
     """Provide an initialized Flask for use in certain test cases."""
-    init_app(app, api)
-    return app
+    init_app(app_, api)
+    return app_
 
 
 @pytest.fixture(scope="session")
-def client(application):
+def client(app):
     """Provide a Flask test client to be used by almost all test cases."""
-    with application.test_client() as client:
+    with app.test_client() as client:
         yield client

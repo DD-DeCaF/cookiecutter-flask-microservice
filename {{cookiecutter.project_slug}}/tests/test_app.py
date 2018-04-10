@@ -16,6 +16,6 @@
 """Test expected functioning of the main app."""
 
 
-def test_mode(application):
+def test_mode(app):
     """Ensure that the app is in testing mode."""
-    assert application.testing
+    assert app.testing

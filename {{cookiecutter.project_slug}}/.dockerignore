@@ -1,8 +1,7 @@
 *
-!{{cookiecutter.project_slug}}/
+!src/
+!scripts/
 !tests/
-!configuration.py
+!gunicorn.py
 !setup.cfg
 !Pipfile*
-!pyproject.toml
-!tox.ini

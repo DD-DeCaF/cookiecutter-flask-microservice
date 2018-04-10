@@ -1,49 +1,68 @@
-.PHONY: network start qa test flake8 isort isort-save license stop clean logs
+.PHONY: start qa test flake8 isort isort-save license stop clean logs
+SHELL:=/bin/bash
 
-#################################################################################
+###############################################################################o #
 # COMMANDS                                                                      #
 #################################################################################
 
-## Create the external network
+## Create the docker bridge network if necessary.
 network:
-	docker network inspect {{cookiecutter.github_username}} >/dev/null || docker network create {{cookiecutter.github_username}}
+	docker network inspect {{cookiecutter.github_username}} >/dev/null 2>&1 || \
+		docker network create {{cookiecutter.github_username}}
 
-## Install and start the service.
-start: network
-	docker-compose up -d --build
+## Build local docker images.
+build: network
+	docker-compose build
 
-## Run all QA targets
-qa: test flake8 isort license
+## Start all services in the background.
+start:
+	docker-compose up -d
 
-## Run the tests
+## Run all QA targets.
+qa: test style
+
+## Run all style related targets.
+style: flake8 isort license
+
+## Run the tests.
 test:
-	docker-compose run --rm -e ENVIRONMENT=testing web pytest --cov={{cookiecutter.project_module}} tests
+	docker-compose run --rm -e ENVIRONMENT=testing web \
+		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests"
 
-## Run flake8
+## Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
+test-travis:
+	$(eval ci_env=$(shell bash <(curl -s https://codecov.io/env)))
+	docker-compose run --rm -e ENVIRONMENT=testing $(ci_env)  web \
+		/bin/sh -c "pytest -s --cov=src/foo_bar tests && codecov"
+
+## Run flake8.
 flake8:
-	docker-compose run --rm web flake8 {{cookiecutter.project_module}} tests
+	docker-compose run --rm web \
+		flake8 src/{{cookiecutter.project_module}} tests
 
-## Check import sorting
+## Check Python package import order.
 isort:
-	docker-compose run --rm web isort --check-only --recursive {{cookiecutter.project_module}} tests
+	docker-compose run --rm web \
+		isort --check-only --recursive src/{{cookiecutter.project_module}} tests
 
-## Sort imports and write changes to files
+## Sort imports and write changes to files.
 isort-save:
-	docker-compose run --rm web isort --recursive {{cookiecutter.project_module}} tests
+	docker-compose run --rm web \
+		isort --recursive src/{{cookiecutter.project_module}} tests
 
-## Verify source code license headers
+## Verify source code license headers.
 license:
-	./scripts/verify_license_headers.sh {{cookiecutter.project_module}}
+	./scripts/verify_license_headers.sh src/{{cookiecutter.project_module}} tests
 
-## Shut down the Docker containers.
+## Stop all services.
 stop:
 	docker-compose stop
 
-## Remove all containers.
+## Stop all services and remove containers.
 clean:
 	docker-compose down
 
-## Read the logs.
+## Follow the logs.
 logs:
 	docker-compose logs --tail="all" -f
 

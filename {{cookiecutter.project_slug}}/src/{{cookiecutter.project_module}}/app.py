@@ -20,8 +20,8 @@ import logging.config
 import os
 
 from flask import Flask
-from flask_restplus import Api
 from flask_cors import CORS
+from flask_restplus import Api
 from raven.contrib.flask import Sentry
 
 
@@ -34,12 +34,14 @@ api = Api(
 
 
 def init_app(application, interface):
+    """Initialize the main app with config information and routes."""
     if os.environ["ENVIRONMENT"] == "production":
         from {{cookiecutter.project_module}}.settings import Production
         application.config.from_object(Production())
     elif os.environ["ENVIRONMENT"] == "testing":
         from {{cookiecutter.project_module}}.settings import Testing
         application.config.from_object(Testing())
+        application.testing = True
     else:
         from {{cookiecutter.project_module}}.settings import Development
         application.config.from_object(Development())

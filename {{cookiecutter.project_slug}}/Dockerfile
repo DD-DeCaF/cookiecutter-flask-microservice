@@ -1,24 +1,24 @@
-FROM python:3.6-alpine
+FROM python:3.6-alpine3.7
 
 ENV PYTHONUNBUFFERED=1
 
-ENV USER=giraffe
+ENV APP_USER=giraffe
 
 ARG UID=1000
 ARG GID=1000
 
 ARG CWD=/app
 
-RUN addgroup -g "${GID}" -S "${USER}" && \
-    adduser -u "${UID}" -S -G "${USER}" "${USER}"
+ENV PYTHONPATH=${CWD}/src
+
+RUN addgroup -g "${GID}" -S "${APP_USER}" && \
+    adduser -u "${UID}" -G "${APP_USER}" -S "${APP_USER}"
 
 RUN apk add --update --no-cache openssl ca-certificates
 
 WORKDIR "${CWD}"
 
-COPY . "${CWD}/"
-
-RUN chown -R "${USER}:${USER}" "${CWD}"
+COPY Pipfile* "${CWD}/"
 
 # `g++` is required for building `gevent` but all build dependencies are
 # later removed again to reduce the layer size.
@@ -32,3 +32,6 @@ RUN set -x \
     && rm -rf /root/.cache/pip \
     && apk del .build-deps
 
+COPY . "${CWD}/"
+
+RUN chown -R "${APP_USER}:${APP_USER}" "${CWD}"

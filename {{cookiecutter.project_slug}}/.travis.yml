@@ -1,6 +1,5 @@
 sudo: required
-language: python
-python: "3.6"
+language: minimal
 
 git:
   depth: 2
@@ -8,30 +7,50 @@ git:
 services:
   - docker
 
-before_install:
-  - pip install -U pip setuptools wheel
-  - pip install pipenv
+env:
+  global:
+    - IMAGE_TAG=travis-ci
+  matrix:
+    - TARGET=test-travis
+    - TARGET=flake8
+    - TARGET=isort
+    - TARGET=license
 
-install:
-  - pipenv install --dev --system
+matrix:
+  fast_finish: true
+
+before_script:
+  - docker login -u={{cookiecutter.docker_username}} -p=${DOCKER_PASSWORD}
+  - make network
 
 script:
-  - py.test -vxs --cov={{cookiecutter.project_slug}} tests
-  - flake8 {{cookiecutter.project_slug}} tests
-  - isort --check-only --recursive {{cookiecutter.project_slug}} tests
-  - ./scripts/verify_license_headers.sh {{cookiecutter.project_slug}}
-  - docker build .
+  - docker pull {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
+  - make ${TARGET}
 
-after_success:
-  - codecov
-  - docker login -u=${DOCKER_USERNAME} -p=${DOCKER_PASSWORD}
+stages:
+  - build
+  - test
+  - name: deploy
+    if: branch = master
 
-deploy:
-  provider: script
-  script: ./scripts/push_to_hub.sh
-  on:
-    all_branches: true
+jobs:
+  include:
+    - stage: build
+      script:
+        - make build
+        - docker push {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
+    - stage: deploy
+      script:
+        - docker pull {{cookiecutter.docker_username}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
+      deploy:
+        provider: script
+        script: ./scripts/push_to_hub.sh
 
 notifications:
-  on_success: never
-  on_failure: always
+  email: false
+  slack:
+    rooms:
+      - ${SLACK_ACCOUNT}:${SLACK_TOKEN}#${SLACK_CHANNEL}
+    on_success: never
+    on_failure: always
+    on_pull_requests: false

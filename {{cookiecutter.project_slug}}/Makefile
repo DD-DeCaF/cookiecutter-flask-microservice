@@ -17,6 +17,7 @@ network:
 ## Build local docker images.
 build: network
 	docker-compose build
+	./scripts/copy_pipenv_lockfile.sh
 
 ## Build local docker images for deployment.
 build-travis:

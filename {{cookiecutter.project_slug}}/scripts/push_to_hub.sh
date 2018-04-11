@@ -17,7 +17,7 @@
 
 set -eu
 
-docker tag {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG_PROD} {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${TRAVIS_COMMIT::12}
-docker tag {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG_PROD} {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${TRAVIS_BRANCH}
+docker tag ${PROD_IMAGE} {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${TRAVIS_COMMIT::12}
+docker tag ${PROD_IMAGE} {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${TRAVIS_BRANCH}
 docker push {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${TRAVIS_COMMIT::12}
 docker push {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${TRAVIS_BRANCH}

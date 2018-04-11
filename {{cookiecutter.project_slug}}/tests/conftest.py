@@ -26,7 +26,8 @@ from {{cookiecutter.project_module}}.app import init_app
 def app():
     """Provide an initialized Flask for use in certain test cases."""
     init_app(app_, api)
-    return app_
+    with app_.app_context():
+        yield app_
 
 
 @pytest.fixture(scope="session")

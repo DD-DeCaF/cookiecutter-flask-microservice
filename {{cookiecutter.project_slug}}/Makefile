@@ -24,7 +24,7 @@ start:
 	docker-compose up -d
 
 ## Run all QA targets.
-qa: test style
+qa: test pipenv-check style
 
 ## Run all style related targets.
 style: flake8 isort license
@@ -39,6 +39,10 @@ test-travis:
 	$(eval ci_env=$(shell bash <(curl -s https://codecov.io/env)))
 	docker-compose run --rm -e ENVIRONMENT=testing $(ci_env)  web \
 		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests && codecov"
+
+## Check for known vulnerabilities in python dependencies.
+pipenv-check:
+	-docker-compose run --rm web pipenv check --system
 
 ## Run flake8.
 flake8:

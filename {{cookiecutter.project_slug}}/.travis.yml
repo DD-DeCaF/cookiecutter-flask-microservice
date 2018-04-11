@@ -14,6 +14,7 @@ env:
     - PROD_IMAGE={{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:travis-ci-prod
   matrix:
     - TARGET=test-travis
+    - TARGET=pipenv-check
     - TARGET=flake8
     - TARGET=isort
     - TARGET=license

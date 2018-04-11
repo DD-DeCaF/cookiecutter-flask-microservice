@@ -19,4 +19,4 @@ set -eu
 CONTAINER=$(docker create {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG:-latest})
 docker cp "${CONTAINER}:/app/Pipfile.lock" .
 docker rm ${CONTAINER}
-echo "Copied generated Pipfile.lock to your current workdir"
+echo "Copied the generated 'Pipfile.lock' to your current working directory."

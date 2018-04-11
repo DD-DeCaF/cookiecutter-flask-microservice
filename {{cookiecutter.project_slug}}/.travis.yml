@@ -38,8 +38,8 @@ jobs:
   include:
     - stage: build
       script:
-        - docker build --build-arg PIPENV_CMD="pipenv install --dev --system --deploy" -t {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG} .
-        - docker build --build-arg PIPENV_CMD="pipenv install --system --deploy" -t {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG_PROD} .
+        - docker build --build-arg PIPENV_FLAGS="--dev --deploy" -t {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG} .
+        - docker build --build-arg PIPENV_FLAGS="--deploy" -t {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG_PROD} .
         - docker push {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
         - docker push {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG_PROD}
     - stage: deploy

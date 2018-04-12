@@ -41,7 +41,6 @@ def init_app(application, interface):
     elif os.environ["ENVIRONMENT"] == "testing":
         from {{cookiecutter.project_module}}.settings import Testing
         application.config.from_object(Testing())
-        application.testing = True
     else:
         from {{cookiecutter.project_module}}.settings import Development
         application.config.from_object(Development())

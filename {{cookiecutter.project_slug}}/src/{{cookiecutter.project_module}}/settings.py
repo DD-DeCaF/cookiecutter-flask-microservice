@@ -74,7 +74,9 @@ class Development(Default):
 class Testing(Default):
     """Testing environment configuration."""
 
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.TESTING = True
 
 
 class Production(Default):

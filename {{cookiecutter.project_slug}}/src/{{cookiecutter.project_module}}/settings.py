@@ -21,7 +21,7 @@ import os
 __all__ = ("Development", "Testing", "Production")
 
 
-class Default(object):
+class Default:
     """Set the default configuration for all environments."""
 
     def __init__(self):

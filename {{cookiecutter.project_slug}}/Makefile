@@ -7,7 +7,7 @@ SHELL:=/bin/bash
 #################################################################################
 
 ## Run all initialization targets.
-setup:
+setup: network
 
 ## Create the docker bridge network if necessary.
 network:
@@ -15,7 +15,7 @@ network:
 		docker network create {{cookiecutter.github_username}}
 
 ## Build local docker images.
-build: network
+build:
 	docker-compose build
 	./scripts/copy_pipenv_lockfile.sh
 

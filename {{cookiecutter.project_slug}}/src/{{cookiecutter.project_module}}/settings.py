@@ -24,7 +24,7 @@ __all__ = ("Development", "Testing", "Production")
 class Default(object):
     """Set the default configuration for all environments."""
 
-    def __init__(self, **kwargs):
+    def __init__(self):
         """
         Initialize the default configuration.
 
@@ -32,7 +32,7 @@ class Default(object):
         from environments that are not active but access
         ``os.environ.__getitem__``.
         """
-        super().__init__(**kwargs)
+        super().__init__()
         self.DEBUG = True
         self.SECRET_KEY = os.urandom(24)
         self.CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(",")
@@ -82,14 +82,14 @@ class Testing(Default):
 class Production(Default):
     """Production environment configuration."""
 
-    def __init__(self, **kwargs):
+    def __init__(self):
         """
         Initialize the production environment configuration.
 
         Require a secret key to be defined and make logging slightly less
         verbose.
         """
-        super().__init__(**kwargs)
+        super().__init__()
         self.DEBUG = False
         self.SECRET_KEY = os.environ['SECRET_KEY']
         self.LOGGING['root']['level'] = 'INFO'

@@ -16,6 +16,7 @@ pytest = "*"
 pytest-cov = "*"
 codecov = "*"
 flake8 = "*"
+flake8-docstrings = "*"
 isort = "*"
 
 [requires]

@@ -7,7 +7,7 @@ SHELL:=/bin/bash
 #################################################################################
 
 ## Run all initialization targets.
-setup: build
+setup:
 
 ## Create the docker bridge network if necessary.
 network:

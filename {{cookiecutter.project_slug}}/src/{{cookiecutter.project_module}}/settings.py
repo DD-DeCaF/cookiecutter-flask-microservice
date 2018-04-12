@@ -32,7 +32,6 @@ class Default(object):
         from environments that are not active but access
         ``os.environ.__getitem__``.
         """
-        super().__init__()
         self.DEBUG = True
         self.SECRET_KEY = os.urandom(24)
         self.CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(",")

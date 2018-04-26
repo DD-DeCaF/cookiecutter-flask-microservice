@@ -1,4 +1,4 @@
-.PHONY: setup network build start qa style test test-travis flake8 isort \
+.PHONY: setup network lock build start qa style test test-travis flake8 isort \
 		isort-save license stop clean logs
 SHELL:=/bin/bash
 
@@ -13,6 +13,10 @@ setup: network
 network:
 	docker network inspect {{cookiecutter.github_username}} >/dev/null 2>&1 || \
 		docker network create {{cookiecutter.github_username}}
+
+## Generate Pipfile.lock.
+lock:
+	docker-compose run --rm web pipenv lock
 
 ## Build local docker images.
 build:

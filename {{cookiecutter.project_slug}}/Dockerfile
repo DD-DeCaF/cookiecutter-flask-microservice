@@ -11,7 +11,7 @@ ARG CWD=/app
 
 ENV PYTHONPATH=${CWD}/src
 
-ARG PIPENV_FLAGS="--dev"
+ARG PIPENV_FLAGS="--dev --deploy"
 
 RUN addgroup -g "${GID}" -S "${APP_USER}" && \
     adduser -u "${UID}" -G "${APP_USER}" -S "${APP_USER}"

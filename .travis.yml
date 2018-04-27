@@ -6,9 +6,8 @@ branches:
   - master
 before_install:
   - pip install -U pip setuptools wheel
-  - pip install pipenv
 install:
-  - pipenv install --dev
+  - pip install cookiecutter flake8 pytest pytest-cookies
 script: pytest
 notifications:
   on_success: never

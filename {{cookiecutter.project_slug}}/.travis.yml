@@ -40,7 +40,7 @@ jobs:
   include:
     - stage: build
       script:
-        - docker build --build-arg PIPENV_FLAGS="--dev --deploy" -t ${DEV_IMAGE} .
+        - docker build -t ${DEV_IMAGE} .
         - docker build --build-arg PIPENV_FLAGS="--deploy" -t ${PROD_IMAGE} .
         - docker push ${DEV_IMAGE}
         - docker push ${PROD_IMAGE}

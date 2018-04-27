@@ -8,7 +8,7 @@ before_install:
   - pip install -U pip setuptools wheel
   - pip install pipenv
 install:
-  - pipenv install --dev
+  - pipenv install --dev --system
 script: pytest
 notifications:
   on_success: never

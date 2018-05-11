@@ -46,10 +46,6 @@ def init_app(application, interface):
         application.config.from_object(Development())
 
     # Configure logging
-    # The flask logger, when created, disables existing loggers. The following
-    # statement ensures the flask logger is created, so that it doesn't disable
-    # our loggers later when it is first accessed.
-    application.logger
     logging.config.dictConfig(application.config['LOGGING'])
 
     # Configure Sentry

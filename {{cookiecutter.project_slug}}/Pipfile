@@ -8,6 +8,7 @@ Flask = "*"
 Flask-Cors = "*"
 flask-restplus = "*"
 gunicorn = "*"
+greenlet = {version = "*", platform_python_implementation="=='CPython'"}
 gevent = "*"
 raven = {version = "*", extras = ["flask"]}
 

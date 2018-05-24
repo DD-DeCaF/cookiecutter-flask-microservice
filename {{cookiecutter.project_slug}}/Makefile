@@ -24,7 +24,7 @@ build:
 
 ## Start all services in the background.
 start:
-	docker-compose up -d
+	docker-compose up --force-recreate -d
 
 ## Run all QA targets.
 qa: test pipenv-check style

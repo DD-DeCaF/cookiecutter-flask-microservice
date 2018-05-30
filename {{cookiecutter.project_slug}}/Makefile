@@ -27,25 +27,10 @@ start:
 	docker-compose up --force-recreate -d
 
 ## Run all QA targets.
-qa: test pipenv-check style
+qa: style pipenv-check test
 
 ## Run all style related targets.
 style: flake8 isort license
-
-## Run the tests.
-test:
-	docker-compose run --rm -e ENVIRONMENT=testing web \
-		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests"
-
-## Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
-test-travis:
-	$(eval ci_env=$(shell bash <(curl -s https://codecov.io/env)))
-	docker-compose run --rm -e ENVIRONMENT=testing $(ci_env)  web \
-		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests && codecov"
-
-## Check for known vulnerabilities in python dependencies.
-pipenv-check:
-	docker-compose run --rm web pipenv check --system
 
 ## Run flake8.
 flake8:
@@ -65,6 +50,21 @@ isort-save:
 ## Verify source code license headers.
 license:
 	./scripts/verify_license_headers.sh src/{{cookiecutter.project_module}} tests
+
+## Check for known vulnerabilities in python dependencies.
+pipenv-check:
+	docker-compose run --rm web pipenv check --system
+
+## Run the tests.
+test:
+	docker-compose run --rm -e ENVIRONMENT=testing web \
+		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests"
+
+## Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
+test-travis:
+	$(eval ci_env=$(shell bash <(curl -s https://codecov.io/env)))
+	docker-compose run --rm -e ENVIRONMENT=testing $(ci_env)  web \
+		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}} tests && codecov"
 
 ## Stop all services.
 stop:

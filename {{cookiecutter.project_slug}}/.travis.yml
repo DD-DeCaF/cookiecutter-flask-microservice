@@ -13,11 +13,11 @@ env:
     - DEV_IMAGE={{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
     - PROD_IMAGE={{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:travis-ci-prod
   matrix:
-    - TARGET=test-travis
-    - TARGET=pipenv-check
     - TARGET=flake8
     - TARGET=isort
     - TARGET=license
+    - TARGET=pipenv-check
+    - TARGET=test-travis
 
 matrix:
   fast_finish: true

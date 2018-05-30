@@ -9,47 +9,29 @@ services:
 
 env:
   global:
+    - IMAGE_REPO={{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}
     - IMAGE_TAG=travis-ci-test
-    - DEV_IMAGE={{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG}
-    - PROD_IMAGE={{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:travis-ci-prod
-  matrix:
-    - TARGET=flake8
-    - TARGET=isort
-    - TARGET=license
-    - TARGET=pipenv-check
-    - TARGET=test-travis
+    - IMAGE=${IMAGE_REPO}:${IMAGE_TAG}
 
-matrix:
-  fast_finish: true
-
-before_script:
+before_install:
   - echo ${DOCKER_PASSWORD} | docker login -u=decaftravis --password-stdin
-  - make network
+
+install:
+  - docker build -t ${IMAGE} .
+  - make setup
 
 script:
-  - docker pull ${DEV_IMAGE}
-  - make ${TARGET}
+  - make flake8
+  - make isort
+  - make license
+  - make pipenv-check
+  - make test-travis
 
-stages:
-  - build
-  - test
-  - name: deploy
-    if: branch = master
-
-jobs:
-  include:
-    - stage: build
-      script:
-        - docker build -t ${DEV_IMAGE} .
-        - docker build --build-arg PIPENV_FLAGS="--deploy" -t ${PROD_IMAGE} .
-        - docker push ${DEV_IMAGE}
-        - docker push ${PROD_IMAGE}
-    - stage: deploy
-      script:
-        - docker pull ${PROD_IMAGE}
-      deploy:
-        provider: script
-        script: ./scripts/push_to_hub.sh
+deploy:
+  provider: script
+  script: ./scripts/push_to_hub.sh
+  on:
+    all_branches: true
 
 notifications:
   email: false

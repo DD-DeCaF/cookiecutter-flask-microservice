@@ -23,7 +23,7 @@ matrix:
   fast_finish: true
 
 before_script:
-  - docker login -u=decaftravis -p=${DOCKER_PASSWORD}
+  - echo ${DOCKER_PASSWORD} | docker login -u=decaftravis --password-stdin
   - make network
 
 script:

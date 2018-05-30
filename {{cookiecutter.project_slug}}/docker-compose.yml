@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: {{cookiecutter.docker_organization}}/{{cookiecutter.project_slug}}:${IMAGE_TAG:-latest}
+    image: gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}:${IMAGE_TAG:-latest}
     networks:
       default:
       {{cookiecutter.github_username}}:

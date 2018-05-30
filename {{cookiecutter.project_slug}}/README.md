@@ -21,6 +21,7 @@ Perform the following steps after creating a new service from the cookiecutter.
   * `SLACK_TOKEN`: [Find it here](https://biosustain.slack.com/services/B8D8VKW3W)
   * `SLACK_CHANNEL`: Normally `#decaf-notifications`
   * `DOCKER_PASSWORD`: For push access to [Docker Hub](https://hub.docker.com/u/dddecaf/dashboard/)
+* Generate secure token for Slack notifications in `.travis.yml`
 * Remove this section from the README.
 
 ## Development

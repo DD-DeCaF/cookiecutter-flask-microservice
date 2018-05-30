@@ -11,8 +11,6 @@ ARG CWD=/app
 
 ENV PYTHONPATH=${CWD}/src
 
-ARG PIPENV_FLAGS="--dev --deploy"
-
 RUN addgroup -g "${GID}" -S "${APP_USER}" && \
     adduser -u "${UID}" -G "${APP_USER}" -S "${APP_USER}"
 
@@ -30,7 +28,7 @@ RUN set -x \
     && ln -sf /usr/local/bin/python /bin/python \
     && apk add --no-cache --virtual .build-deps g++ \
     && pip install --upgrade pip setuptools wheel pipenv \
-    && pipenv install --system ${PIPENV_FLAGS} \
+    && pipenv install --system --dev --deploy \
     && rm -rf /root/.cache/pip \
     && apk del .build-deps
 

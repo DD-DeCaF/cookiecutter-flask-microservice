@@ -17,7 +17,7 @@ before_install:
   - echo ${DOCKER_PASSWORD} | docker login -u=decaftravis --password-stdin
 
 install:
-  - docker build -t ${IMAGE_REPO}:${TRAVIS_COMMIT::12} -t ${IMAGE_REPO}:${TRAVIS_BRANCH}: .
+  - docker build -t ${IMAGE_REPO}:${TRAVIS_COMMIT::12} -t ${IMAGE_REPO}:${TRAVIS_BRANCH} .
   - make setup
 
 script:

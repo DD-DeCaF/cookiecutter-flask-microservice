@@ -17,7 +17,7 @@ before_install:
   - echo ${DOCKER_PASSWORD} | docker login -u=decaftravis --password-stdin
 
 install:
-  - docker build -t ${IMAGE} .
+  - docker build -t ${IMAGE_REPO}:${TRAVIS_COMMIT::12} -t ${IMAGE_REPO}:${TRAVIS_BRANCH}: .
   - make setup
 
 script:
@@ -30,8 +30,6 @@ script:
 before_deploy:
   - ./scripts/install_gcloud.sh
   - ./scripts/install_kubectl.sh
-  - docker tag ${IMAGE} ${IMAGE_REPO}:${TRAVIS_COMMIT::12}
-  - docker tag ${IMAGE} ${IMAGE_REPO}:${TRAVIS_BRANCH}
   - docker push ${IMAGE_REPO}:${TRAVIS_COMMIT::12}
   - docker push ${IMAGE_REPO}:${TRAVIS_BRANCH}
 

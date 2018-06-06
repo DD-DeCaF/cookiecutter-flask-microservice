@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{cookiecutter.project_slug}}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - api.dd-decaf.eu
+    - api-staging.dd-decaf.eu
+    secretName: decaf-tls
+  rules:
+  - host: api.dd-decaf.eu
+    http:
+      paths:
+      - path: /{{cookiecutter.project_slug}}
+        backend:
+          serviceName: {{cookiecutter.project_slug}}-production
+          servicePort: 80
+  - host: api-staging.dd-decaf.eu
+    http:
+      paths:
+      - path: /{{cookiecutter.project_slug}}
+        backend:
+          serviceName: {{cookiecutter.project_slug}}-staging
+          servicePort: 80

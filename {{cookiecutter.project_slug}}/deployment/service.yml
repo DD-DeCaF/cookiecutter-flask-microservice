@@ -1,0 +1,29 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{cookiecutter.project_slug}}-production
+spec:
+  selector:
+    app: {{cookiecutter.project_slug}}
+    env: production
+  ports:
+  - name: web
+    protocol: TCP
+    port: 80
+    targetPort: 8000
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{cookiecutter.project_slug}}-staging
+spec:
+  selector:
+    app: {{cookiecutter.project_slug}}
+    env: staging
+  ports:
+  - name: web
+    protocol: TCP
+    port: 80
+    targetPort: 8000

@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{cookiecutter.project_slug}}-production
+spec:
+  selector:
+    matchLabels:
+      app: {{cookiecutter.project_slug}}
+      env: production
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{cookiecutter.project_slug}}
+        env: production
+    spec:
+      containers:
+      - name: web
+        image: gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}:master
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ENVIRONMENT
+          value: production
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: {{cookiecutter.project_slug}}-production
+              key: SENTRY_DSN
+        command: ["gunicorn", "-c", "gunicorn.py", "{{cookiecutter.project_module}}.wsgi:app"]
+        resources:
+          requests:
+            cpu: "10m"
+          limits:
+            cpu: "100m"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{cookiecutter.project_slug}}-staging
+spec:
+  selector:
+    matchLabels:
+      app: {{cookiecutter.project_slug}}
+      env: staging
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{cookiecutter.project_slug}}
+        env: staging
+    spec:
+      containers:
+      - name: web
+        image: gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}:devel
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ENVIRONMENT
+          value: staging
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: {{cookiecutter.project_slug}}-staging
+              key: SENTRY_DSN
+        command: ["gunicorn", "-c", "gunicorn.py", "{{cookiecutter.project_module}}.wsgi:app"]
+        resources:
+          requests:
+            cpu: "5m"
+          limits:
+            cpu: "100m"

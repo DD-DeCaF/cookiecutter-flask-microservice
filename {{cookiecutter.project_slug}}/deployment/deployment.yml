@@ -23,6 +23,11 @@ spec:
         env:
         - name: ENVIRONMENT
           value: production
+        - name: ALLOWED_ORIGINS
+          valueFrom:
+            secretKeyRef:
+              name: warehouse-to-model-production
+              key: ALLOWED_ORIGINS
         - name: SENTRY_DSN
           valueFrom:
             secretKeyRef:
@@ -62,6 +67,11 @@ spec:
         env:
         - name: ENVIRONMENT
           value: staging
+        - name: ALLOWED_ORIGINS
+          valueFrom:
+            secretKeyRef:
+              name: warehouse-to-model-production
+              key: ALLOWED_ORIGINS
         - name: SENTRY_DSN
           valueFrom:
             secretKeyRef:

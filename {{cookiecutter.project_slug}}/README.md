@@ -14,7 +14,7 @@
 
 Perform the following steps after creating a new service from the cookiecutter.
 
-* Create kubernetes secrets `{{cookiecutter.project_slug}}-production` and `{{cookiecutter.project_slug}}-staging` with `SENTRY_DSN` values
+* Create kubernetes secrets `{{cookiecutter.project_slug}}-production` and `{{cookiecutter.project_slug}}-staging` with `ALLOWED_ORIGINS` and `SENTRY_DSN` values
 * Review the cpu/memory limits in `deployment/deployment.yml` under `resources` ([see documentation](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/))
 * Create the following environment variables in Travis CI:
   * `ENVIRONMENT`: `testing`

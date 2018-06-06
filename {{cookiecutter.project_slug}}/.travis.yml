@@ -10,8 +10,7 @@ services:
 env:
   global:
     - IMAGE_REPO=gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}
-    - IMAGE_TAG=travis-ci-test
-    - IMAGE=${IMAGE_REPO}:${IMAGE_TAG}
+    - IMAGE_TAG=${TRAVIS_BRANCH}
 
 before_install:
   - echo ${DOCKER_PASSWORD} | docker login -u=decaftravis --password-stdin

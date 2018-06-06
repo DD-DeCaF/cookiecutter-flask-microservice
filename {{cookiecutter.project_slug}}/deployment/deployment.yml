@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}:master
+        image: gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}:master
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}/{{cookiecutter.project_slug}}:devel
+        image: gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}:devel
         imagePullPolicy: Always
         ports:
         - containerPort: 8000

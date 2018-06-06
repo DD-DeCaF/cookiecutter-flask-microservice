@@ -21,6 +21,8 @@ from {{cookiecutter.project_module}}.app import app
 
 
 class HelloWorld(Resource):
+    """Example resource."""
+
     def get(self):
         """Shout out loud."""
         app.logger.debug("I ran!")

@@ -17,7 +17,6 @@
 
 import logging
 import logging.config
-import os
 
 from flask import Flask
 from flask_cors import CORS
@@ -35,15 +34,8 @@ api = Api(
 
 def init_app(application, interface):
     """Initialize the main app with config information and routes."""
-    if os.environ["ENVIRONMENT"] == "production":
-        from {{cookiecutter.project_module}}.settings import Production
-        application.config.from_object(Production())
-    elif os.environ["ENVIRONMENT"] == "testing":
-        from {{cookiecutter.project_module}}.settings import Testing
-        application.config.from_object(Testing())
-    else:
-        from {{cookiecutter.project_module}}.settings import Development
-        application.config.from_object(Development())
+    from {{cookiecutter.project_module}}.settings import current_config
+    application.config.from_object(current_config())
 
     # Configure logging
     logging.config.dictConfig(application.config['LOGGING'])

@@ -14,7 +14,8 @@ ENV PYTHONPATH=${CWD}/src
 RUN addgroup -g "${GID}" -S "${APP_USER}" && \
     adduser -u "${UID}" -G "${APP_USER}" -S "${APP_USER}"
 
-RUN apk add --update --no-cache openssl ca-certificates
+# git: required for codecov
+RUN apk add --update --no-cache openssl ca-certificates git
 
 WORKDIR "${CWD}"
 

@@ -43,7 +43,7 @@ def init_app(application, interface):
     # Configure Sentry
     if application.config['SENTRY_DSN']:
         sentry = Sentry(dsn=application.config['SENTRY_DSN'], logging=True,
-                        level=logging.WARNING)
+                        level=logging.ERROR)
         sentry.init_app(application)
 
     # Add routes and resources.

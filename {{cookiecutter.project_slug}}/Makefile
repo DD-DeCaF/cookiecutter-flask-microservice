@@ -58,14 +58,14 @@ pipenv-check:
 ## Run the tests.
 test:
 	docker-compose run --rm -e ENVIRONMENT=testing web \
-		/bin/sh -c "pytest -s --cov=src/{{cookiecutter.project_module}}"
+		pytest --cov=src/{{cookiecutter.project_module}}
 
 ## Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
 shared := /tmp/coverage
 test-travis:
 	mkdir "$(shared)"
 	docker-compose run --rm -e ENVIRONMENT=testing -v "$(shared):$(shared)" \
-		web pytest -s --cov-config=.travis-covrc --cov
+		web pytest --cov-config=.travis-covrc --cov
 	bash <(curl -s https://codecov.io/bash) -f "$(shared)/.coverage"
 
 ## Stop all services.

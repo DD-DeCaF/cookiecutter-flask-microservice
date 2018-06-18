@@ -17,6 +17,8 @@
 
 import os
 
+import werkzeug.exceptions
+
 
 __all__ = ("Development", "Testing", "Production")
 
@@ -49,6 +51,15 @@ class Default:
         self.BUNDLE_ERRORS = True
         self.CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(',')
         self.SENTRY_DSN = os.environ.get('SENTRY_DSN')
+        self.SENTRY_CONFIG = {
+            'ignore_exceptions': [
+                werkzeug.exceptions.BadRequest,
+                werkzeug.exceptions.Unauthorized,
+                werkzeug.exceptions.Forbidden,
+                werkzeug.exceptions.NotFound,
+                werkzeug.exceptions.MethodNotAllowed,
+            ]
+        }
         self.LOGGING = {
             'version': 1,
             'disable_existing_loggers': False,

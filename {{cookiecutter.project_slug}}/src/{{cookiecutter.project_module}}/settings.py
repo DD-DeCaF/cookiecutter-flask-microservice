@@ -65,11 +65,6 @@ class Default:
                     'formatter': 'simple',
                 },
             },
-            'sentry': {
-                'level': 'ERROR',
-                'class': 'raven.handlers.logging.SentryHandler',
-                'dsn': self.SENTRY_DSN,
-            },
             'loggers': {
                 # All loggers will by default use the root logger below (and
                 # hence be very verbose). To silence spammy/uninteresting log
@@ -77,7 +72,7 @@ class Default:
             },
             'root': {
                 'level': 'DEBUG',
-                'handlers': ['console', 'sentry'],
+                'handlers': ['console'],
             },
         }
 

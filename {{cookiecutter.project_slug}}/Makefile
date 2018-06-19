@@ -63,10 +63,11 @@ test:
 ## Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
 shared := /tmp/coverage
 test-travis:
-	mkdir "$(shared)"
+	mkdir --parents "$(shared)"
 	docker-compose run --rm -e ENVIRONMENT=testing -v "$(shared):$(shared)" \
-		web pytest --cov-config=.travis-covrc --cov
-	bash <(curl -s https://codecov.io/bash) -f "$(shared)/.coverage"
+		web pytest --cov-report "xml:$(shared)/coverage.xml" --cov-report term \
+		--cov=src/{{cookiecutter.project_module}}
+	bash <(curl -s https://codecov.io/bash) -f "$(shared)/coverage.xml"
 
 ## Stop all services.
 stop:

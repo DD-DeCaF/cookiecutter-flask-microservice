@@ -1,4 +1,0 @@
-[run]
-data_file = /tmp/coverage/.coverage
-source =
-    src/{{cookiecutter.project_module}}

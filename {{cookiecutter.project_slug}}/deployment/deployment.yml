@@ -25,6 +25,8 @@ spec:
           value: production
         - name: SCRIPT_NAME
           value: /{{cookiecutter.project_slug}}
+        - name: FLASK_APP
+          value: src/{{cookiecutter.project_module}}/wsgi.py
         - name: SENTRY_DSN
           valueFrom:
             secretKeyRef:
@@ -66,6 +68,8 @@ spec:
           value: staging
         - name: SCRIPT_NAME
           value: /{{cookiecutter.project_slug}}
+        - name: FLASK_APP
+          value: src/{{cookiecutter.project_module}}/wsgi.py
         - name: SENTRY_DSN
           valueFrom:
             secretKeyRef:

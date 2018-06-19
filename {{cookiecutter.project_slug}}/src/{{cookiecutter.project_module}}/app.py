@@ -18,7 +18,7 @@
 import logging
 import logging.config
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_restplus import Api
 from raven.contrib.flask import Sentry
@@ -50,6 +50,10 @@ def init_app(application, interface):
     from {{cookiecutter.project_module}} import resources
     interface.add_resource(resources.HelloWorld, "/")
     interface.init_app(application)
+
+    @application.route("/openapi.json")
+    def openapi_schema():
+        return jsonify(interface.__schema__)
 
     # Add CORS information for all resources.
     CORS(application)

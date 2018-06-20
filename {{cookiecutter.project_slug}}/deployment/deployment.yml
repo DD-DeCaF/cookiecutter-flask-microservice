@@ -23,6 +23,8 @@ spec:
         env:
         - name: ENVIRONMENT
           value: production
+        - name: SCRIPT_NAME
+          value: /{{cookiecutter.project_slug}}
         - name: SENTRY_DSN
           valueFrom:
             secretKeyRef:
@@ -62,6 +64,8 @@ spec:
         env:
         - name: ENVIRONMENT
           value: staging
+        - name: SCRIPT_NAME
+          value: /{{cookiecutter.project_slug}}
         - name: SENTRY_DSN
           valueFrom:
             secretKeyRef:

@@ -73,7 +73,7 @@ spec:
         - name: FLASK_APP
           value: src/{{cookiecutter.project_module}}/wsgi.py
         - name: ALLOWED_ORIGINS
-          value: https://app.dd-decaf.eu,http://localhost:4200
+          value: https://staging.dd-decaf.eu,http://localhost:4200
         - name: SENTRY_DSN
           valueFrom:
             secretKeyRef:

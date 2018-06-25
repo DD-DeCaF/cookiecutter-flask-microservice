@@ -17,6 +17,7 @@ services:
     environment:
       - ENVIRONMENT=${ENVIRONMENT:-development}
       - FLASK_APP=src/{{cookiecutter.project_module}}/wsgi.py
+      - SCRIPT_NAME=${SCRIPT_NAME:-}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:*}
       - SENTRY_DSN=${SENTRY_DSN}
     command: gunicorn -c gunicorn.py {{cookiecutter.project_module}}.wsgi:app

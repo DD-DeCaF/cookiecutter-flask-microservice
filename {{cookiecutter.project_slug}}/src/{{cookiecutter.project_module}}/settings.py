@@ -47,7 +47,7 @@ class Default:
         self.DEBUG = True
         self.SECRET_KEY = os.urandom(24)
         self.BUNDLE_ERRORS = True
-        self.CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(",")
+        self.CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(',')
         self.SENTRY_DSN = os.environ.get('SENTRY_DSN')
         self.LOGGING = {
             'version': 1,

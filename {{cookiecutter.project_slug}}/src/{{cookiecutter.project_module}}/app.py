@@ -22,6 +22,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
 from raven.contrib.flask import Sentry
+from werkzeug.contrib.fixers import ProxyFix
 
 
 app = Flask(__name__)
@@ -53,3 +54,10 @@ def init_app(application, interface):
 
     # Add CORS information for all resources.
     CORS(application)
+
+    # Please keep in mind that it is a security issue to use such a middleware
+    # in a non-proxy setup because it will blindly trust the incoming headers
+    # which might be forged by malicious clients.
+    # We require this in order to serve the HTML version of the OpenAPI docs
+    # via https.
+    application.wsgi_app = ProxyFix(application.wsgi_app)

@@ -46,7 +46,6 @@ class Default:
         """
         self.DEBUG = True
         self.SECRET_KEY = os.urandom(24)
-        self.SCRIPT_NAME = os.environ.get('SCRIPT_NAME', '/')
         self.BUNDLE_ERRORS = True
         self.CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(',')
         self.SENTRY_DSN = os.environ.get('SENTRY_DSN')
@@ -106,5 +105,4 @@ class Production(Default):
         super().__init__()
         self.DEBUG = False
         self.SECRET_KEY = os.environ['SECRET_KEY']
-        self.SCRIPT_NAME = os.environ['SCRIPT_NAME']
         self.LOGGING['root']['level'] = 'INFO'

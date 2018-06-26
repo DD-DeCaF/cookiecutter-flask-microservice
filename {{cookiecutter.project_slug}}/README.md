@@ -23,6 +23,9 @@ Perform the following steps after creating a new service from the cookiecutter.
   * `GCLOUD_EMAIL`: Google Cloud service account email for Travis CI
   * `GCLOUD_KEY`: Google Cloud service account key for Travis CI (JSON file base64-encoded)
 * Generate secure token for Slack notifications in `.travis.yml`
+  * [Install the Travis CLI](https://github.com/travis-ci/travis.rb#installation)
+  * Run the following command in the project root directory:
+    `travis encrypt "account:token#channel" --add notifications.slack.rooms`
 * Remove this section from the README.
 
 ## Development

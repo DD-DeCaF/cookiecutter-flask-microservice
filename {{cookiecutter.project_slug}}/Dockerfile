@@ -1,41 +1,46 @@
-FROM python:3.6-alpine3.7
+# Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-ENV PYTHONUNBUFFERED=1
+FROM dddecaf/wsgi-base:master
 
 ENV APP_USER=giraffe
 
 ARG UID=1000
 ARG GID=1000
 
-ARG CWD=/app
+ARG CWD="/app"
 
-ENV PYTHONPATH=${CWD}/src
+ENV PYTHONPATH="${CWD}/src"
 
-RUN addgroup -g "${GID}" -S "${APP_USER}" && \
-    adduser -u "${UID}" -G "${APP_USER}" -S "${APP_USER}"
-
-RUN apk add --update --no-cache openssl ca-certificates
+RUN addgroup -S -g "${GID}" "${APP_USER}" && \
+    adduser -S -H -u "${UID}" -G "${APP_USER}" "${APP_USER}"
 
 WORKDIR "${CWD}"
 
-COPY Pipfile* "${CWD}/"
+COPY requirements.in dev-requirements.in ./
 
-# `g++` is required for building `gevent` but all build dependencies are
-# later removed again to reduce the layer size.
-# Bugs related to pip and pipenv:
-# - The symlink is a temporary workaround for a bug in pipenv.
-#   Still present as of pipenv==11.9.0.
-# - pipenv is pinned to 11.10.0 to avoid the following issue:
-#   https://github.com/pypa/pipenv/issues/2078
-# - pip is pinned to 9.0.3 to avoid issues with `pipenv check` using deprecated
-#   pip APIs
-RUN set -x \
-    && ln -sf /usr/local/bin/python /bin/python \
-    && apk add --no-cache --virtual .build-deps g++ \
-    && pip install --upgrade pip==9.0.3 setuptools wheel pipenv==11.10.0 \
-    && pipenv install --system --dev --deploy \
-    && rm -rf /root/.cache/pip \
-    && apk del .build-deps
+# `wsgi-requirements.txt` comes from the parent image and needs to be part of
+# the `pip-sync` command otherwise those dependencies are removed.
+RUN set -eux \
+    && pip-compile --generate-hashes \
+        --output-file dev-requirements.txt dev-requirements.in \
+    && pip-compile --generate-hashes \
+        --output-file requirements.txt requirements.in \
+    && pip-sync /opt/wsgi-requirements.txt \
+        dev-requirements.txt \
+        requirements.txt \
+    && rm -rf /root/.cache/pip
 
 COPY . "${CWD}/"
 

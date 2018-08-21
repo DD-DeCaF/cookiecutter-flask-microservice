@@ -1,6 +1,6 @@
-.PHONY: setup network lock build start qa style test test-travis flake8 isort \
+.PHONY: setup network build start qa style test test-travis flake8 isort \
 		isort-save license stop clean logs
-SHELL:=/bin/bash
+SHELL := /bin/bash
 
 #################################################################################
 # COMMANDS                                                                      #
@@ -14,10 +14,6 @@ network:
 	docker network inspect {{cookiecutter.github_username}} >/dev/null 2>&1 || \
 		docker network create {{cookiecutter.github_username}}
 
-## Generate Pipfile.lock.
-lock:
-	docker-compose run --rm web pipenv lock
-
 ## Build local docker images.
 build:
 	docker-compose build
@@ -27,7 +23,7 @@ start:
 	docker-compose up --force-recreate -d
 
 ## Run all QA targets.
-qa: style pipenv-check test
+qa: style safety test
 
 ## Run all style related targets.
 style: flake8 isort license
@@ -52,8 +48,8 @@ license:
 	./scripts/verify_license_headers.sh src/{{cookiecutter.project_module}} tests
 
 ## Check for known vulnerabilities in python dependencies.
-pipenv-check:
-	docker-compose run --rm web pipenv check --system
+safety:
+	docker-compose run --rm web safety check
 
 ## Run the tests.
 test:

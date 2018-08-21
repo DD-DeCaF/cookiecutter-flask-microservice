@@ -4,4 +4,4 @@
 !tests/
 !gunicorn.py
 !setup.cfg
-!Pipfile*
+!*requirements.in

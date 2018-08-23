@@ -23,7 +23,7 @@ script:
   - make flake8
   - make isort
   - make license
-  - make pipenv-check
+  - make safety
   - make test-travis
 
 before_deploy:

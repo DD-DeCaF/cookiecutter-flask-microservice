@@ -1,6 +1,6 @@
-.PHONY: setup network build start qa style test test-travis flake8 isort \
-		isort-save license stop clean logs
-SHELL := /bin/bash
+.PHONY: setup network build start qa style safety test test-travis flake8 \
+    isort isort-save license stop clean logs
+SHELL:=/bin/bash
 
 #################################################################################
 # COMMANDS                                                                      #

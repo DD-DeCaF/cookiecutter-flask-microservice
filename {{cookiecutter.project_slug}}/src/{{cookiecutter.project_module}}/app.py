@@ -18,22 +18,16 @@
 import logging
 import logging.config
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
-from flask_restplus import Api
 from raven.contrib.flask import Sentry
 from werkzeug.contrib.fixers import ProxyFix
 
 
 app = Flask(__name__)
-api = Api(
-    title="{{cookiecutter.project_name}}",
-    version="0.1.0",
-    description="{{cookiecutter.project_short_description}}",
-)
 
 
-def init_app(application, interface):
+def init_app(application):
     """Initialize the main app with config information and routes."""
     from {{cookiecutter.project_module}}.settings import current_config
     application.config.from_object(current_config())
@@ -49,8 +43,7 @@ def init_app(application, interface):
 
     # Add routes and resources.
     from {{cookiecutter.project_module}} import resources
-    interface.add_resource(resources.HelloWorld, "/")
-    interface.init_app(application)
+    resources.init_app(application)
 
     # Add CORS information for all resources.
     CORS(application)

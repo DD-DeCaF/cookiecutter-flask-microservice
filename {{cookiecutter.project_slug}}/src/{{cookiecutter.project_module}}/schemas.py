@@ -13,9 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Prepare the application for use by the WSGI server (gunicorn)."""
+"""Marshmallow schemas for marshalling the API endpoints."""
 
-from {{cookiecutter.project_module}}.app import app, init_app
+from marshmallow import Schema, fields
 
 
-init_app(app)
+class StrictSchema(Schema):
+    """Shared empty schema instance with strict validation."""
+
+    class Meta:
+        """Meta class for marshmallow schemas."""
+
+        strict = True
+
+
+class HelloSchema(StrictSchema):
+    """Example schema."""
+
+    name = fields.Str(required=True)

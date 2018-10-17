@@ -1,4 +1,4 @@
 Flask
 Flask-Cors
-flask-restplus
+flask-apispec
 raven[flask]

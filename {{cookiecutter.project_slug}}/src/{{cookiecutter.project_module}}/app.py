@@ -48,6 +48,14 @@ def init_app(application):
     # Add CORS information for all resources.
     CORS(application)
 
+    # Add an error handler for webargs parser error, ensuring a JSON response
+    # including all error messages produced from the parser.
+    @app.errorhandler(422)
+    def handle_webargs_error(error):
+        response = jsonify(error.data['messages'])
+        response.status_code = error.code
+        return response
+
     # Please keep in mind that it is a security issue to use such a middleware
     # in a non-proxy setup because it will blindly trust the incoming headers
     # which might be forged by malicious clients.

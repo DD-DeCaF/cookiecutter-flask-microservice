@@ -21,3 +21,10 @@ def test_docs(client):
     resp = client.get("/")
     assert resp.status_code == 200
     assert resp.content_type == "text/html; charset=utf-8"
+
+
+def test_hello(client):
+    """Expect the example endpoint to echo provided name."""
+    resp = client.get("/hello", json={'name': "Cleese"})
+    assert resp.status_code == 200
+    assert resp.json == {'name': "Cleese"}

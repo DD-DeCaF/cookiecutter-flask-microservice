@@ -18,10 +18,12 @@
 import logging
 import logging.config
 
-from flask import Flask, jsonify
+from flask import Flask
 from flask_cors import CORS
 from raven.contrib.flask import Sentry
 from werkzeug.contrib.fixers import ProxyFix
+
+from . import errorhandlers
 
 
 app = Flask(__name__)
@@ -48,13 +50,8 @@ def init_app(application):
     # Add CORS information for all resources.
     CORS(application)
 
-    # Add an error handler for webargs parser error, ensuring a JSON response
-    # including all error messages produced from the parser.
-    @app.errorhandler(422)
-    def handle_webargs_error(error):
-        response = jsonify(error.data['messages'])
-        response.status_code = error.code
-        return response
+    # Register error handlers
+    errorhandlers.init_app(application)
 
     # Please keep in mind that it is a security issue to use such a middleware
     # in a non-proxy setup because it will blindly trust the incoming headers

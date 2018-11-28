@@ -26,6 +26,7 @@ import sys
 from flask import jsonify
 
 from werkzeug.exceptions import HTTPException
+from werkzeug.routing import RoutingException
 
 
 logger = logging.getLogger(__name__)
@@ -55,9 +56,14 @@ def init_app(app):
         Include the error description and corresponding status code, known to be
         available on the werkzeug HTTPExceptions.
         """
-        response = jsonify({'message': error.description})
-        response.status_code = error.code
-        return response
+        # As werkzeug's routing exceptions also inherit from HTTPException,
+        # check for those and allow them to return with redirect responses.
+        if isinstance(error, RoutingException):
+            return error
+        else:
+            response = jsonify({'message': error.description})
+            response.status_code = error.code
+            return response
 
     @app.errorhandler(Exception)
     def handle_uncaught_error(error):

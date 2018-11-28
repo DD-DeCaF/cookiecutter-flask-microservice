@@ -60,7 +60,7 @@ def init_app(app):
         return response
 
     @app.errorhandler(Exception)
-    def handle_http_error(error):
+    def handle_uncaught_error(error):
         """
         Handle any uncaught exceptions.
 

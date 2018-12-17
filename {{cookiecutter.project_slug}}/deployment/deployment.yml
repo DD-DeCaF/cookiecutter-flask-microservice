@@ -35,6 +35,11 @@ spec:
               name: {{cookiecutter.project_slug}}-production
               key: SENTRY_DSN
         command: ["gunicorn", "-c", "gunicorn.py", "{{cookiecutter.project_module}}.wsgi:app"]
+        readinessProbe:
+          httpGet:
+            path: /{{cookiecutter.project_slug}}/healthz
+            port: 8000
+          initialDelaySeconds: 5
         resources:
           requests:
             cpu: "10m"
@@ -80,6 +85,11 @@ spec:
               name: {{cookiecutter.project_slug}}-staging
               key: SENTRY_DSN
         command: ["gunicorn", "-c", "gunicorn.py", "{{cookiecutter.project_module}}.wsgi:app"]
+        readinessProbe:
+          httpGet:
+            path: /{{cookiecutter.project_slug}}/healthz
+            port: 8000
+          initialDelaySeconds: 5
         resources:
           requests:
             cpu: "5m"

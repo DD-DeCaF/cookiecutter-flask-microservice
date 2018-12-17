@@ -21,6 +21,16 @@ from flask_apispec.extension import FlaskApiSpec
 from .schemas import HelloSchema
 
 
+def init_app(app):
+    """Register API resources on the provided Flask application."""
+    def register(path, resource):
+        app.add_url_rule(path, view_func=resource.as_view(resource.__name__))
+        docs.register(resource, endpoint=resource.__name__)
+
+    docs = FlaskApiSpec(app)
+    register('/hello', HelloResource)
+
+
 class HelloResource(MethodResource):
     """Example API resource."""
 
@@ -34,13 +44,3 @@ class HelloResource(MethodResource):
         (use_kwargs) and response marshalling (marshal_with).
         """
         return {'name': name}
-
-
-def init_app(app):
-    """Register API resources on the provided Flask application."""
-    def register(path, resource):
-        app.add_url_rule(path, view_func=resource.as_view(resource.__name__))
-        docs.register(resource, endpoint=resource.__name__)
-
-    docs = FlaskApiSpec(app)
-    register('/hello', HelloResource)

@@ -28,7 +28,19 @@ def init_app(app):
         docs.register(resource, endpoint=resource.__name__)
 
     docs = FlaskApiSpec(app)
+    app.add_url_rule('/healthz', healthz.__name__, healthz)
     register('/hello', HelloResource)
+
+
+def healthz():
+    """
+    Return an empty, successful response for readiness checks.
+
+    A successful response signals that the app is initialized and ready to
+    receive traffic. The main use case is for apps with slow initialization, but
+    external dependencies like database connections can also be tested here.
+    """
+    return ""
 
 
 class HelloResource(MethodResource):

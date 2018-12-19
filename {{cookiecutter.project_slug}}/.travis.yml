@@ -4,6 +4,11 @@ language: minimal
 git:
   depth: 2
 
+branches:
+  only:
+  - master
+  - devel
+
 services:
   - docker
 

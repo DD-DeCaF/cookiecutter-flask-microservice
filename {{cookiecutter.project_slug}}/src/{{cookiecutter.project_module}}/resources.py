@@ -28,7 +28,7 @@ def init_app(app):
         docs.register(resource, endpoint=resource.__name__)
 
     docs = FlaskApiSpec(app)
-    app.add_url_rule('/healthz', healthz.__name__, healthz)
+    app.add_url_rule('/healthz', view_func=healthz)
     register('/hello', HelloResource)
 
 

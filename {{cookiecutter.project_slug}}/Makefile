@@ -1,5 +1,5 @@
 .PHONY: setup network build start qa style safety test test-travis flake8 \
-    isort isort-save license stop clean logs
+    isort isort-save license stop clean logs black-check black
 SHELL:=/bin/bash
 
 #################################################################################
@@ -26,7 +26,15 @@ start:
 qa: style safety test
 
 ## Run all style related targets.
-style: flake8 isort license
+style: black-check flake8 isort license
+
+## Check code for consistency with black.
+black-check:
+	docker-compose run --rm web black --check src tests
+
+## Apply black formatting.
+black:
+	docker-compose run --rm web black src tests
 
 ## Run flake8.
 flake8:

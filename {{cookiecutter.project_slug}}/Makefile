@@ -1,5 +1,5 @@
 .PHONY: setup network build start qa style safety test test-travis flake8 \
-    isort isort-save license stop clean logs black-check black
+    isort-check isort license stop clean logs black-check black
 SHELL:=/bin/bash
 
 #################################################################################
@@ -26,7 +26,7 @@ start:
 qa: style safety test
 
 ## Run all style related targets.
-style: black-check flake8 isort license
+style: black-check flake8 isort-check license
 
 ## Check code for consistency with black.
 black-check:
@@ -42,12 +42,12 @@ flake8:
 		flake8 src/{{cookiecutter.project_module}} tests
 
 ## Check Python package import order.
-isort:
+isort-check:
 	docker-compose run --rm web \
 		isort --check-only --recursive src/{{cookiecutter.project_module}} tests
 
 ## Sort imports and write changes to files.
-isort-save:
+isort:
 	docker-compose run --rm web \
 		isort --recursive src/{{cookiecutter.project_module}} tests
 

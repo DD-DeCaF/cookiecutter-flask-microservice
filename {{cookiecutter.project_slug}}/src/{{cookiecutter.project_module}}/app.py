@@ -23,14 +23,14 @@ from flask_cors import CORS
 from raven.contrib.flask import Sentry
 from werkzeug.contrib.fixers import ProxyFix
 
-from . import errorhandlers
-
 
 app = Flask(__name__)
 
 
 def init_app(application):
     """Initialize the main app with config information and routes."""
+    # Import local modules here to avoid circular dependencies.
+    from {{cookiecutter.project_module}} import errorhandlers, resources
     from {{cookiecutter.project_module}}.settings import current_config
 
     application.config.from_object(current_config())
@@ -46,8 +46,6 @@ def init_app(application):
         sentry.init_app(application)
 
     # Add routes and resources.
-    from {{cookiecutter.project_module}} import resources
-
     resources.init_app(application)
 
     # Add CORS information for all resources.

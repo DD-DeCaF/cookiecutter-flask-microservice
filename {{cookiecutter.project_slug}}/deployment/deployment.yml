@@ -23,6 +23,11 @@ spec:
         env:
         - name: ENVIRONMENT
           value: production
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{cookiecutter.project_slug}}-production
+              key: SECRET_KEY
         - name: SCRIPT_NAME
           value: /{{cookiecutter.project_slug}}
         - name: FLASK_APP
@@ -73,6 +78,11 @@ spec:
         env:
         - name: ENVIRONMENT
           value: staging
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{cookiecutter.project_slug}}-staging
+              key: SECRET_KEY
         - name: SCRIPT_NAME
           value: /{{cookiecutter.project_slug}}
         - name: FLASK_APP

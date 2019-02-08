@@ -48,7 +48,7 @@ def handle_webargs_error(error):
     Note that this sets some constrains for manually throwing 422 exceptions
     as error messages must be made available in the same way.
     """
-    response = jsonify(error.data['messages'])
+    response = jsonify(error.data["messages"])
     response.status_code = error.code
     return response
 
@@ -65,7 +65,7 @@ def handle_http_error(error):
     if isinstance(error, RoutingException):
         return error
     else:
-        response = jsonify({'message': error.description})
+        response = jsonify({"message": error.description})
         response.status_code = error.code
         return response
 
@@ -82,6 +82,6 @@ def handle_uncaught_error(error):
     client.
     """
     logger.error("Uncaught exception", exc_info=sys.exc_info())
-    response = jsonify({'message': "Internal server error"})
+    response = jsonify({"message": "Internal server error"})
     response.status_code = 500
     return response

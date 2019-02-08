@@ -23,13 +23,14 @@ from .schemas import HelloSchema
 
 def init_app(app):
     """Register API resources on the provided Flask application."""
+
     def register(path, resource):
         app.add_url_rule(path, view_func=resource.as_view(resource.__name__))
         docs.register(resource, endpoint=resource.__name__)
 
     docs = FlaskApiSpec(app)
-    app.add_url_rule('/healthz', view_func=healthz)
-    register('/hello', HelloResource)
+    app.add_url_rule("/healthz", view_func=healthz)
+    register("/hello", HelloResource)
 
 
 def healthz():
@@ -55,4 +56,4 @@ class HelloResource(MethodResource):
         This demonstrates both how to use request argument validation
         (use_kwargs) and response marshalling (marshal_with).
         """
-        return {'name': name}
+        return {"name": name}

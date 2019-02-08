@@ -26,7 +26,6 @@ script:
   - make isort
   - make license
   - make safety
-  - make test-travis
   - # Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
   - mkdir --parents /tmp/coverage
   - docker-compose run --rm -e ENVIRONMENT=testing -v "/tmp/coverage:/tmp/coverage" web pytest --cov-report "xml:/tmp/coverage/coverage.xml" --cov-report term --cov=src/{{cookiecutter.project_module}}

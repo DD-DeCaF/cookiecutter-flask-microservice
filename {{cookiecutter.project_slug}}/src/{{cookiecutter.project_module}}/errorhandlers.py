@@ -24,7 +24,6 @@ import logging
 import sys
 
 from flask import jsonify
-
 from werkzeug.exceptions import HTTPException
 from werkzeug.routing import RoutingException
 

@@ -55,5 +55,6 @@ In order of priority, code must adhere to the rules of the following tools:
     * pyflakes
     * mccabe
     * [pydocstyle](http://www.pydocstyle.org/en/2.1.1/index.html)
+    * [bugbear](https://github.com/PyCQA/flake8-bugbear)
 3. The [NumPy docstring standard](https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard)
 4. [isort](https://github.com/timothycrosley/isort)

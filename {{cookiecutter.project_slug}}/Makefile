@@ -56,15 +56,6 @@ test:
 	docker-compose run --rm -e ENVIRONMENT=testing web \
 		pytest --cov=src/{{cookiecutter.project_module}}
 
-## Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
-shared := /tmp/coverage
-test-travis:
-	mkdir --parents "$(shared)"
-	docker-compose run --rm -e ENVIRONMENT=testing -v "$(shared):$(shared)" \
-		web pytest --cov-report "xml:$(shared)/coverage.xml" --cov-report term \
-		--cov=src/{{cookiecutter.project_module}}
-	bash <(curl -s https://codecov.io/bash) -f "$(shared)/coverage.xml"
-
 ## Stop all services.
 stop:
 	docker-compose stop

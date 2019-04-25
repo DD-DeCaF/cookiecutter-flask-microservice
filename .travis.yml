@@ -6,6 +6,7 @@ services:
   - docker
 branches:
   - master
+  - devel
 before_install:
   - pip install -U pip setuptools wheel
 install:

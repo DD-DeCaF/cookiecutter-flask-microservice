@@ -15,7 +15,7 @@
 
 """Prepare the application for use by the WSGI server (gunicorn)."""
 
-from {{cookiecutter.project_module}}.app import api, app, init_app
+from {{cookiecutter.project_module}}.app import app, init_app
 
 
-init_app(app, api)
+init_app(app)

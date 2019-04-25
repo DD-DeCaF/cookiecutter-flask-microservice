@@ -39,7 +39,11 @@ access_log_format = '''%(t)s "%(r)s" %(s)s %(b)s %(L)s "%(f)s"'''
 
 
 if _config == "production":
-    workers = os.cpu_count() * 2 + 1
+    # Our resource policy is that each web service is granted at least a single
+    # vCPU when available. The number of workers is then a guess that having two
+    # workers I/O bound and a third processing a request will utilize available
+    # resources well, but that guess needs to be tested and benchmarked.
+    workers = 3
     preload_app = True
 else:
     # FIXME: The number of workers is up for debate. At least for testing more

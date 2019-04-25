@@ -15,15 +15,45 @@
 
 """Implement RESTful API endpoints using resources."""
 
-from flask_restplus import Resource
+from flask_apispec import MethodResource, marshal_with, use_kwargs
+from flask_apispec.extension import FlaskApiSpec
 
-from {{cookiecutter.project_module}}.app import app
+from .schemas import HelloSchema
 
 
-class HelloWorld(Resource):
-    """Example resource."""
+def init_app(app):
+    """Register API resources on the provided Flask application."""
 
-    def get(self):
-        """Shout out loud."""
-        app.logger.debug("I ran!")
-        return "Hello World!"
+    def register(path, resource):
+        app.add_url_rule(path, view_func=resource.as_view(resource.__name__))
+        docs.register(resource, endpoint=resource.__name__)
+
+    docs = FlaskApiSpec(app)
+    app.add_url_rule("/healthz", view_func=healthz)
+    register("/hello", HelloResource)
+
+
+def healthz():
+    """
+    Return an empty, successful response for readiness checks.
+
+    A successful response signals that the app is initialized and ready to
+    receive traffic. The main use case is for apps with slow initialization, but
+    external dependencies like database connections can also be tested here.
+    """
+    return ""
+
+
+class HelloResource(MethodResource):
+    """Example API resource."""
+
+    @use_kwargs(HelloSchema)
+    @marshal_with(HelloSchema, code=200)
+    def get(self, name):
+        """
+        Implement example endpoint.
+
+        This demonstrates both how to use request argument validation
+        (use_kwargs) and response marshalling (marshal_with).
+        """
+        return {"name": name}

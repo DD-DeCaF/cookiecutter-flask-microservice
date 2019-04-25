@@ -13,11 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Test expected functioning of the OpenAPI docs endpoints."""
+"""Marshmallow schemas for marshalling the API endpoints."""
+
+from marshmallow import Schema, fields
 
 
-def test_docs(client):
-    """Expect the OpenAPI docs to be served at root."""
-    resp = client.get("/")
-    assert resp.status_code == 200
-    assert resp.content_type == "text/html; charset=utf-8"
+class StrictSchema(Schema):
+    """Shared empty schema instance with strict validation."""
+
+    class Meta:
+        """Meta class for marshmallow schemas."""
+
+        strict = True
+
+
+class HelloSchema(StrictSchema):
+    """Example schema."""
+
+    name = fields.Str(required=True)

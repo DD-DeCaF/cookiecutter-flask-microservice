@@ -19,17 +19,16 @@ import os
 
 import werkzeug.exceptions
 
-
 __all__ = ("Development", "Testing", "Production")
 
 
 def current_config():
     """Return the appropriate configuration object based on the environment."""
-    if os.environ['ENVIRONMENT'] in ['production', 'staging']:
+    if os.environ["ENVIRONMENT"] in ["production", "staging"]:
         return Production()
-    elif os.environ['ENVIRONMENT'] == 'testing':
+    elif os.environ["ENVIRONMENT"] == "testing":
         return Testing()
-    elif os.environ['ENVIRONMENT'] == 'development':
+    elif os.environ["ENVIRONMENT"] == "development":
         return Development()
     else:
         raise KeyError(f"Unknown environment '{os.environ['ENVIRONMENT']}'")
@@ -49,10 +48,12 @@ class Default:
         self.DEBUG = True
         self.SECRET_KEY = os.urandom(24)
         self.BUNDLE_ERRORS = True
-        self.CORS_ORIGINS = os.environ['ALLOWED_ORIGINS'].split(',')
-        self.SENTRY_DSN = os.environ.get('SENTRY_DSN')
+        self.APISPEC_TITLE = "{{cookiecutter.project_name}}"
+        self.APISPEC_SWAGGER_UI_URL = "/"
+        self.CORS_ORIGINS = os.environ["ALLOWED_ORIGINS"].split(",")
+        self.SENTRY_DSN = os.environ.get("SENTRY_DSN")
         self.SENTRY_CONFIG = {
-            'ignore_exceptions': [
+            "ignore_exceptions": [
                 werkzeug.exceptions.BadRequest,
                 werkzeug.exceptions.Unauthorized,
                 werkzeug.exceptions.Forbidden,
@@ -61,30 +62,28 @@ class Default:
             ]
         }
         self.LOGGING = {
-            'version': 1,
-            'disable_existing_loggers': False,
-            'formatters': {
-                'simple': {
-                    'format': "%(asctime)s [%(levelname)s] [%(name)s] "
-                              "%(message)s",
-                },
+            "version": 1,
+            "disable_existing_loggers": False,
+            "formatters": {
+                "simple": {
+                    "format": "%(asctime)s [%(levelname)s] [%(name)s] "
+                    "%(filename)s:%(funcName)s:%(lineno)d | "
+                    "%(message)s"
+                }
             },
-            'handlers': {
-                'console': {
-                    'level': 'DEBUG',
-                    'class': 'logging.StreamHandler',
-                    'formatter': 'simple',
-                },
+            "handlers": {
+                "console": {
+                    "level": "DEBUG",
+                    "class": "logging.StreamHandler",
+                    "formatter": "simple",
+                }
             },
-            'loggers': {
+            "loggers": {
                 # All loggers will by default use the root logger below (and
                 # hence be very verbose). To silence spammy/uninteresting log
                 # output, add the loggers here and increase the loglevel.
             },
-            'root': {
-                'level': 'DEBUG',
-                'handlers': ['console'],
-            },
+            "root": {"level": "DEBUG", "handlers": ["console"]},
         }
 
 
@@ -115,5 +114,5 @@ class Production(Default):
         """
         super().__init__()
         self.DEBUG = False
-        self.SECRET_KEY = os.environ['SECRET_KEY']
-        self.LOGGING['root']['level'] = 'INFO'
+        self.SECRET_KEY = os.environ["SECRET_KEY"]
+        self.LOGGING["root"]["level"] = "INFO"

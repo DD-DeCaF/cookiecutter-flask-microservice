@@ -1,5 +1,5 @@
 .PHONY: setup network build start qa style safety test test-travis flake8 \
-    isort isort-save license stop clean logs
+    isort-check isort license stop clean logs black-check black
 SHELL:=/bin/bash
 
 #################################################################################
@@ -31,7 +31,15 @@ start:
 qa: style safety test
 
 ## Run all style related targets.
-style: flake8 isort license
+style: black-check flake8 isort-check license
+
+## Check code for consistency with black.
+black-check:
+	docker-compose run --rm web black --check src tests
+
+## Apply black formatting.
+black:
+	docker-compose run --rm web black src tests
 
 ## Run flake8.
 flake8:
@@ -39,12 +47,12 @@ flake8:
 		flake8 src/{{cookiecutter.project_module}} tests
 
 ## Check Python package import order.
-isort:
+isort-check:
 	docker-compose run --rm web \
 		isort --check-only --recursive src/{{cookiecutter.project_module}} tests
 
 ## Sort imports and write changes to files.
-isort-save:
+isort:
 	docker-compose run --rm web \
 		isort --recursive src/{{cookiecutter.project_module}} tests
 
@@ -60,15 +68,6 @@ safety:
 test:
 	docker-compose run --rm -e ENVIRONMENT=testing web \
 		pytest --cov=src/{{cookiecutter.project_module}}
-
-## Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
-shared := /tmp/coverage
-test-travis:
-	mkdir --parents "$(shared)"
-	docker-compose run --rm -e ENVIRONMENT=testing -v "$(shared):$(shared)" \
-		web pytest --cov-report "xml:$(shared)/coverage.xml" --cov-report term \
-		--cov=src/{{cookiecutter.project_module}}
-	bash <(curl -s https://codecov.io/bash) -f "$(shared)/coverage.xml"
 
 ## Stop all services.
 stop:

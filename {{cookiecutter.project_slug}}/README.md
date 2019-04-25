@@ -3,12 +3,10 @@
 ![master Branch](https://img.shields.io/badge/branch-master-blue.svg)
 [![master Build Status](https://travis-ci.org/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?branch=master)](https://travis-ci.org/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}})
 [![master Codecov](https://codecov.io/gh/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/branch/master/graph/badge.svg)](https://codecov.io/gh/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/branch/master)
-[![master Requirements Status](https://requires.io/github/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/requirements.svg?branch=master)](https://requires.io/github/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/requirements/?branch=master)
 
 ![devel Branch](https://img.shields.io/badge/branch-devel-blue.svg)
 [![devel Build Status](https://travis-ci.org/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}.svg?branch=devel)](https://travis-ci.org/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}})
 [![devel Codecov](https://codecov.io/gh/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/branch/devel/graph/badge.svg)](https://codecov.io/gh/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/branch/devel)
-[![devel Requirements Status](https://requires.io/github/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/requirements.svg?branch=devel)](https://requires.io/github/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}/requirements/?branch=devel)
 
 ## Post-cookiecutter steps
 
@@ -46,3 +44,17 @@ possible variables and their default values.
 * `SENTRY_DSN` DSN for reporting exceptions to
   [Sentry](https://docs.sentry.io/clients/python/integrations/flask/).
 * `ALLOWED_ORIGINS`: Comma-seperated list of CORS allowed origins.
+
+### Code style
+
+In order of priority, code must adhere to the rules of the following tools:
+
+1. [black](https://github.com/ambv/black)
+2. [flake8](http://flake8.pycqa.org/en/latest/)
+    * pycodestyle
+    * pyflakes
+    * mccabe
+    * [pydocstyle](http://www.pydocstyle.org/en/2.1.1/index.html)
+    * [bugbear](https://github.com/PyCQA/flake8-bugbear)
+3. The [NumPy docstring standard](https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard)
+4. [isort](https://github.com/timothycrosley/isort)

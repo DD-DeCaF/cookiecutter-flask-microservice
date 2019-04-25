@@ -17,20 +17,18 @@ env:
     - IMAGE_REPO=gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}
     - IMAGE_TAG=${TRAVIS_BRANCH}
 
-install:
-  - docker build -t ${IMAGE_REPO}:${TRAVIS_COMMIT::12} -t ${IMAGE_REPO}:${TRAVIS_BRANCH} .
+before_install:
   - make setup
 
+install:
+  - docker build -t ${IMAGE_REPO}:${TRAVIS_COMMIT::12} -t ${IMAGE_REPO}:${TRAVIS_BRANCH} .
+
 script:
-  - make black-check
-  - make flake8
-  - make isort-check
-  - make license
+  - make style
   - make safety
-  - # Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
-  - mkdir --parents /tmp/coverage
-  - docker-compose run --rm -e ENVIRONMENT=testing -v "/tmp/coverage:/tmp/coverage" web pytest --cov-report "xml:/tmp/coverage/coverage.xml" --cov-report term --cov=src/{{cookiecutter.project_module}}
-  - bash <(curl -s https://codecov.io/bash) -f "/tmp/coverage/coverage.xml"
+# Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
+  - docker-compose exec -e ENVIRONMENT=testing web tox -e py36 -- --cov-report=xml --cov-report=term
+  - bash <(curl -s https://codecov.io/bash)
 
 before_deploy:
   - ./scripts/install_gcloud.sh

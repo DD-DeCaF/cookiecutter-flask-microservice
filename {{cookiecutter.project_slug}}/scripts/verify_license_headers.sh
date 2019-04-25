@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ash
 
 # Copyright (c) {{cookiecutter.year}}, Novo Nordisk Foundation Center for Biosustainability,
 # Technical University of Denmark.
@@ -25,7 +25,7 @@ do
   grep "${PATTERN}" ${file} >/dev/null
   if [[ $? != 0 ]]
   then
-    echo "Source code file ${file} seems to be missing a license header"
+    echo "Source code file ${file} seems to be missing a license header."
     RET=1
   fi
 done

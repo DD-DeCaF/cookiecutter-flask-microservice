@@ -19,7 +19,6 @@ import os
 
 import werkzeug.exceptions
 
-
 __all__ = ("Development", "Testing", "Production")
 
 
@@ -67,7 +66,9 @@ class Default:
             "disable_existing_loggers": False,
             "formatters": {
                 "simple": {
-                    "format": "%(asctime)s [%(levelname)s] [%(name)s] " "%(message)s"
+                    "format": "%(asctime)s [%(levelname)s] [%(name)s] "
+                              "%(filename)s:%(funcName)s:%(lineno)d | "
+                              "%(message)s"
                 }
             },
             "handlers": {

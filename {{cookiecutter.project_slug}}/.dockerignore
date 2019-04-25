@@ -4,4 +4,4 @@
 !tests/
 !gunicorn.py
 !setup.cfg
-!*requirements.in
+!*requirements.txt

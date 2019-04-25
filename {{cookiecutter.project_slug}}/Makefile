@@ -18,6 +18,11 @@ network:
 build:
 	docker-compose build
 
+## Recompile requirements and store pinned dependencies with hashes.
+pip-compile:
+	docker-compose run --rm web pip-compile --generate-hashes dev-requirements.in
+	docker-compose run --rm web pip-compile --generate-hashes requirements.in
+
 ## Start all services in the background.
 start:
 	docker-compose up --force-recreate -d

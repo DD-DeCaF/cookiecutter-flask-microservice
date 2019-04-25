@@ -25,6 +25,6 @@ def test_docs(client):
 
 def test_hello(client):
     """Expect the example endpoint to echo provided name."""
-    resp = client.get("/hello", json={'name': "Cleese"})
+    resp = client.get("/hello", json={"name": "Cleese"})
     assert resp.status_code == 200
-    assert resp.json == {'name': "Cleese"}
+    assert resp.json == {"name": "Cleese"}

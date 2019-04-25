@@ -44,3 +44,17 @@ possible variables and their default values.
 * `SENTRY_DSN` DSN for reporting exceptions to
   [Sentry](https://docs.sentry.io/clients/python/integrations/flask/).
 * `ALLOWED_ORIGINS`: Comma-seperated list of CORS allowed origins.
+
+### Code style
+
+In order of priority, code must adhere to the rules of the following tools:
+
+1. [black](https://github.com/ambv/black)
+2. [flake8](http://flake8.pycqa.org/en/latest/)
+    * pycodestyle
+    * pyflakes
+    * mccabe
+    * [pydocstyle](http://www.pydocstyle.org/en/2.1.1/index.html)
+    * [bugbear](https://github.com/PyCQA/flake8-bugbear)
+3. The [NumPy docstring standard](https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard)
+4. [isort](https://github.com/timothycrosley/isort)

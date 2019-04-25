@@ -22,8 +22,9 @@ install:
   - make setup
 
 script:
+  - make black-check
   - make flake8
-  - make isort
+  - make isort-check
   - make license
   - make safety
   - # Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).

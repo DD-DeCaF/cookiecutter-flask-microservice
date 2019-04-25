@@ -1,73 +1,60 @@
 .PHONY: setup network build start qa style safety test test-travis flake8 \
     isort-check isort license stop clean logs black-check black
-SHELL:=/bin/bash
 
-#################################################################################
-# COMMANDS                                                                      #
-#################################################################################
-
-## Run all initialization targets.
-setup: network
+################################################################################
+# Commands                                                                     #
+################################################################################
 
 ## Create the docker bridge network if necessary.
 network:
 	docker network inspect {{cookiecutter.github_username}} >/dev/null 2>&1 || \
 		docker network create {{cookiecutter.github_username}}
 
+## Run all initialization targets.
+setup: network
+
+## Generate the compiled requirements files.
+lock:
+	docker run --rm --mount \
+		"source=$(CURDIR)/requirements,target=/opt/requirements/child,type=bind" \
+		dddecaf/wsgi-base:devel pip-compile --verbose --generate-hashes \
+		--upgrade child/requirements.in
+
+## Change file ownership from root to local user.
+own:
+	sudo chown "$(shell id --user --name):$(shell id --group --name)" \
+		requirements/requirements.txt
+	sudo chown -R "$(shell id --user --name):$(shell id --group --name)" .tox
+
 ## Build local docker images.
 build:
 	docker-compose build
-
-## Recompile requirements and store pinned dependencies with hashes.
-pip-compile:
-	docker-compose run --rm web pip-compile --generate-hashes dev-requirements.in
-	docker-compose run --rm web pip-compile --generate-hashes requirements.in
 
 ## Start all services in the background.
 start:
 	docker-compose up --force-recreate -d
 
-## Run all QA targets.
-qa: style safety test
+## Apply all quality assurance (QA) tools.
+qa:
+	docker-compose exec web tox -e isort -- ''
+	docker-compose exec web tox -e black -- ''
 
-## Run all style related targets.
-style: black-check flake8 isort-check license
+## Run all style checks.
+style:
+	docker-compose exec -e ENVIRONMENT=testing web \
+		tox -e isort,black,flake8,license
 
-## Check code for consistency with black.
-black-check:
-	docker-compose run --rm web black --check src tests
-
-## Apply black formatting.
-black:
-	docker-compose run --rm web black src tests
-
-## Run flake8.
-flake8:
-	docker-compose run --rm web \
-		flake8 src/{{cookiecutter.project_module}} tests
-
-## Check Python package import order.
-isort-check:
-	docker-compose run --rm web \
-		isort --check-only --recursive src/{{cookiecutter.project_module}} tests
-
-## Sort imports and write changes to files.
-isort:
-	docker-compose run --rm web \
-		isort --recursive src/{{cookiecutter.project_module}} tests
-
-## Verify source code license headers.
-license:
-	./scripts/verify_license_headers.sh src/{{cookiecutter.project_module}} tests
-
-## Check for known vulnerabilities in python dependencies.
 safety:
-	docker-compose run --rm web safety check
+	docker-compose exec -e ENVIRONMENT=testing web \
+		tox -e safety
 
-## Run the tests.
+## Run the test suite.
 test:
-	docker-compose run --rm -e ENVIRONMENT=testing web \
-		pytest --cov=src/{{cookiecutter.project_module}}
+	docker-compose exec -e ENVIRONMENT=testing web \
+		tox -e py36
+
+## Run all quality control (QC) tools.
+qc: style safety test
 
 ## Stop all services.
 stop:
@@ -81,13 +68,14 @@ clean:
 logs:
 	docker-compose logs --tail="all" -f
 
-#################################################################################
-# Self Documenting Commands                                                     #
-#################################################################################
+################################################################################
+# Self Documenting Commands                                                    #
+################################################################################
 
 .DEFAULT_GOAL := show-help
 
-# Inspired by <http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html>
+# Inspired by
+# <http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html>
 # sed script explained:
 # /^##/:
 # 	* save line in hold space
@@ -140,4 +128,5 @@ show-help:
 		} \
 		printf "\n"; \
 	}' \
-	| more $(shell test $(shell uname) = Darwin && echo '--no-init --raw-control-chars')
+	| more $(shell test $(shell uname) = Darwin \
+	&& echo '--no-init --raw-control-chars')

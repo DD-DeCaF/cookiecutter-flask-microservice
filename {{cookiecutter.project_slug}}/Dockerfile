@@ -1,4 +1,5 @@
-# Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
+# Copyright (c) 2018-2019 Novo Nordisk Foundation Center for Biosustainability,
+# Technical University of Denmark.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,17 +24,22 @@ ARG CWD="/app"
 
 ENV PYTHONPATH="${CWD}/src"
 
-RUN addgroup -S -g "${GID}" "${APP_USER}" && \
-    adduser -S -H -u "${UID}" -G "${APP_USER}" "${APP_USER}"
-
 WORKDIR "${CWD}"
-
-COPY requirements ./requirements
 
 RUN apk add --no-cache build-base && \
     pip-sync requirements/requirements.txt && \
     apk del build-base
 
+COPY requirements ./requirements/
+
+RUN set -eux \
+    && pip-sync requirements/requirements.txt \
+    && rm -rf /root/.cache/pip
+
 COPY . "${CWD}/"
 
 RUN chown -R "${APP_USER}:${APP_USER}" "${CWD}"
+
+EXPOSE 8000
+
+CMD ["gunicorn", "-c", "gunicorn.py", "{{cookiecutter.project_module}}.wsgi:app"]

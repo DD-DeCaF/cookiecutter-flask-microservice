@@ -13,11 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 """Provide settings for different deployment scenarios."""
+
 
 import os
 
 import werkzeug.exceptions
+
 
 __all__ = ("Development", "Testing", "Production")
 

@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 """Prepare the application for use by the WSGI server (gunicorn)."""
+
 
 from {{cookiecutter.project_module}}.app import app, init_app
 

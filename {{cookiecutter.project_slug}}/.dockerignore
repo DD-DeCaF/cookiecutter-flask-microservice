@@ -3,5 +3,5 @@
 !scripts/
 !tests/
 !gunicorn.py
-!setup.cfg
-!*requirements.txt
+!requirements/
+!.tox/

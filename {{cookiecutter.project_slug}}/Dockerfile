@@ -1,4 +1,5 @@
-# Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
+# Copyright (c) 2018-2019 Novo Nordisk Foundation Center for Biosustainability,
+# Technical University of Denmark.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,32 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM dddecaf/wsgi-base:master
-
-ENV APP_USER=giraffe
-
-ARG UID=1000
-ARG GID=1000
+FROM dddecaf/wsgi-base:devel
 
 ARG CWD="/app"
 
 ENV PYTHONPATH="${CWD}/src"
 
-RUN addgroup -S -g "${GID}" "${APP_USER}" && \
-    adduser -S -H -u "${UID}" -G "${APP_USER}" "${APP_USER}"
-
 WORKDIR "${CWD}"
 
-COPY requirements.txt dev-requirements.txt ./
+COPY requirements ./requirements/
 
-# `wsgi-requirements.txt` comes from the parent image and needs to be part of
-# the `pip-sync` command otherwise those dependencies are removed.
 RUN set -eux \
-    && pip-sync /opt/wsgi-requirements.txt \
-        dev-requirements.txt \
-        requirements.txt \
+    && pip-sync requirements/requirements.txt \
     && rm -rf /root/.cache/pip
 
 COPY . "${CWD}/"
 
 RUN chown -R "${APP_USER}:${APP_USER}" "${CWD}"
+
+EXPOSE 8000
+
+CMD ["gunicorn", "-c", "gunicorn.py", "{{cookiecutter.project_module}}.wsgi:app"]

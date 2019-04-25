@@ -4,6 +4,7 @@ git:
   depth: 2
 branches:
   - master
+  - devel
 before_install:
   - pip install -U pip setuptools wheel
 install:

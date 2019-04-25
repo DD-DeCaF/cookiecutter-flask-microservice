@@ -1,0 +1,2 @@
+# Always include pinned dependencies from base image.
+-r /opt/requirements/wsgi-requirements.txt

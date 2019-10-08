@@ -15,6 +15,8 @@
 
 """Implement RESTful API endpoints using resources."""
 
+import warnings
+
 from flask_apispec import MethodResource, marshal_with, use_kwargs
 from flask_apispec.extension import FlaskApiSpec
 
@@ -26,7 +28,16 @@ def init_app(app):
 
     def register(path, resource):
         app.add_url_rule(path, view_func=resource.as_view(resource.__name__))
-        docs.register(resource, endpoint=resource.__name__)
+        with warnings.catch_warnings():
+            # Silence the following warning:
+            #   apispec/ext/marshmallow/common.py:145: UserWarning: Multiple
+            #   schemas resolved to the name Organism. The name has been
+            #   modified. Either manually add each of the schemas with a
+            #   different name or provide a custom schema_name_resolver.
+            # This happens due to `exclude` usage in the schema which makes
+            # apispec create a new model, and that's the correct behaviour.
+            warnings.simplefilter("ignore")
+            docs.register(resource, endpoint=resource.__name__)
 
     docs = FlaskApiSpec(app)
     app.add_url_rule("/healthz", view_func=healthz)

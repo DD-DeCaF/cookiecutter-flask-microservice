@@ -28,15 +28,9 @@ RUN addgroup -S -g "${GID}" "${APP_USER}" && \
 
 WORKDIR "${CWD}"
 
-COPY requirements.txt dev-requirements.txt ./
+COPY requirements ./requirements
 
-# `wsgi-requirements.txt` comes from the parent image and needs to be part of
-# the `pip-sync` command otherwise those dependencies are removed.
-RUN set -eux \
-    && pip-sync /opt/wsgi-requirements.txt \
-        dev-requirements.txt \
-        requirements.txt \
-    && rm -rf /root/.cache/pip
+RUN pip-sync requirements/requirements.txt
 
 COPY . "${CWD}/"
 

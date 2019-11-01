@@ -1,5 +1,5 @@
 .PHONY: setup network build start qa style safety test test-travis flake8 \
-    isort-check isort license stop clean logs black-check black
+		isort-check isort license stop clean logs black-check black
 SHELL:=/bin/bash
 
 #################################################################################
@@ -20,8 +20,10 @@ build:
 
 ## Recompile requirements and store pinned dependencies with hashes.
 pip-compile:
-	docker-compose run --rm web pip-compile --generate-hashes dev-requirements.in
-	docker-compose run --rm web pip-compile --generate-hashes requirements.in
+	docker run --rm -v `pwd`/requirements:/build dddecaf/wsgi-base:master \
+		pip-compile --generate-hashes --output-file /build/requirements.txt \
+		/build/requirements.in /build/dev-requirements.in \
+		/opt/base-requirements.txt
 
 ## Start all services in the background.
 start:

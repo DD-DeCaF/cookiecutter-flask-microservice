@@ -45,6 +45,14 @@ possible variables and their default values.
   [Sentry](https://docs.sentry.io/clients/python/integrations/flask/).
 * `ALLOWED_ORIGINS`: Comma-seperated list of CORS allowed origins.
 
+### Updating Python dependencies
+
+To compile a new requirements file and then re-build the service with the new requirements, run:
+
+    make pip-compile build
+
+For more a more in-depth explanation, see `requirements/README` or inspect the `Makefile` targets.
+
 ### Code style
 
 In order of priority, code must adhere to the rules of the following tools:

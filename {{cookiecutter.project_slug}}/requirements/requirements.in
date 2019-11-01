@@ -1,0 +1,8 @@
+# Flask and related plugins
+flask
+flask-cors
+flask-apispec
+
+# Other common dependencies
+raven[flask]
+python-jose

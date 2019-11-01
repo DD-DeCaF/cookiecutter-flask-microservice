@@ -1,0 +1,21 @@
+We use pip-tools for Python dependency management.
+
+This ensures that a deterministic dependency tree is always installed, until a
+user explicitly compiles a new, updated tree. This way, we avoid randomly
+failing builds due to updated dependencies with breaking changes.
+
+All services build on the `dddecaf/wsgi-base` docker image, which pre-installs
+the most commonly used python packages. The output file
+`/opt/base-requirements.txt` is included as input to `pip-compile`, in order to
+apply constraints for all the pre-installed packages. Therefore, the versions
+pinned in the base image will always be used in the services as well.
+
+Note that upgraded packages in the base image will *not* be upgraded here in
+the service until the new requirements have been compiled by `pip-compile`.
+
+The `dddecaf/wsgi-base` docker image is used to compile the requirements since
+the service image is not necessarily available, and needs a compiled
+`requirements.txt` in order to build.
+
+Inspect the `pip-compile` step in the `Makefile` to learn more about how the
+compilation step is implemented.

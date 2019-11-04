@@ -1,3 +1,6 @@
+# Maintain exact constraints from the base image.
+-r /opt/base-requirements.txt
+
 # Flask and related plugins
 flask
 flask-cors

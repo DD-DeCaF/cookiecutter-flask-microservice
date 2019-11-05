@@ -22,7 +22,7 @@ build:
 pip-compile:
 	docker run --rm -v `pwd`/requirements:/build dddecaf/wsgi-base:master \
 		pip-compile --generate-hashes --output-file /build/requirements.txt \
-		/build/requirements.in /build/dev-requirements.in
+		/build/requirements.in
 
 ## Start all services in the background.
 start:

@@ -20,7 +20,7 @@ build:
 
 ## Recompile requirements and store pinned dependencies with hashes.
 pip-compile:
-	docker run --rm -v `pwd`/requirements:/build dddecaf/wsgi-base:master \
+	docker run --rm -v `pwd`/requirements:/build dddecaf/wsgi-base:alpine \
 		pip-compile --generate-hashes --output-file /build/requirements.txt \
 		/build/requirements.in
 

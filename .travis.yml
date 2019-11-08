@@ -2,13 +2,17 @@ language: python
 python: "3.6"
 git:
   depth: 2
+services:
+  - docker
 branches:
   - master
 before_install:
   - pip install -U pip setuptools wheel
 install:
   - pip install cookiecutter flake8 pytest pytest-cookies
-script: pytest
+script:
+  - pytest
+  - ./.travis/test-service.sh
 notifications:
   on_success: never
   on_failure: always

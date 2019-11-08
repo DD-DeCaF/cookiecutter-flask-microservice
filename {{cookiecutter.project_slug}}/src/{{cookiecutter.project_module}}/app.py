@@ -41,9 +41,7 @@ def init_app(application):
     # Configure Sentry
     if application.config["SENTRY_DSN"]:
         sentry = Sentry(
-            dsn=application.config["SENTRY_DSN"],
-            logging=True,
-            level=logging.ERROR,
+            dsn=application.config["SENTRY_DSN"], logging=True, level=logging.ERROR,
         )
         sentry.init_app(application)
 

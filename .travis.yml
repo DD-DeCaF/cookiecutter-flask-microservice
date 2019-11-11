@@ -9,9 +9,8 @@ branches:
 before_install:
   - pip install -U pip setuptools wheel
 install:
-  - pip install cookiecutter flake8 pytest pytest-cookies
+  - pip install cookiecutter
 script:
-  - pytest
   - ./.travis/test-service.sh
 notifications:
   on_success: never

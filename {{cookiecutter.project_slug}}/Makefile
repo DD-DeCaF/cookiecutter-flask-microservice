@@ -29,7 +29,7 @@ start:
 	docker-compose up --force-recreate -d
 
 ## Run all QA targets.
-qa: style safety test
+qa: style safety test gunicorn
 
 ## Run all style related targets.
 style: black-check flake8 isort-check license
@@ -64,6 +64,10 @@ license:
 ## Check for known vulnerabilities in python dependencies.
 safety:
 	docker-compose run --rm web safety check
+
+## Check the gunicorn configuration.
+gunicorn:
+	docker-compose run --rm web gunicorn --check-config -c gunicorn.py {{cookiecutter.project_module}}.wsgi:app
 
 ## Run the tests.
 test:

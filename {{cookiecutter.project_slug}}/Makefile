@@ -65,14 +65,14 @@ license:
 safety:
 	docker-compose run --rm web safety check
 
-## Check the gunicorn configuration.
-gunicorn:
-	docker-compose run --rm web gunicorn --check-config -c gunicorn.py {{cookiecutter.project_module}}.wsgi:app
-
 ## Run the tests.
 test:
 	docker-compose run --rm -e ENVIRONMENT=testing web \
 		pytest --cov=src/{{cookiecutter.project_module}}
+
+## Check the gunicorn configuration.
+gunicorn:
+	docker-compose run --rm web gunicorn --check-config -c gunicorn.py {{cookiecutter.project_module}}.wsgi:app
 
 ## Stop all services.
 stop:

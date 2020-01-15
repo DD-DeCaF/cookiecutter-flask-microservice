@@ -30,7 +30,9 @@ WORKDIR "${CWD}"
 
 COPY requirements ./requirements
 
-RUN pip-sync requirements/requirements.txt
+RUN apk add --no-cache build-base && \
+    pip-sync requirements/requirements.txt && \
+    apk del build-base
 
 COPY . "${CWD}/"
 

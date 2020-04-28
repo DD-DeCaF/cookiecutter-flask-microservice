@@ -1,5 +1,5 @@
-sudo: required
-language: minimal
+os: linux
+language: shell
 
 git:
   depth: 2

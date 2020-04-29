@@ -29,18 +29,20 @@ before_install:
 
 install:
 - make build
+- make build-local
+- make start
 
 script:
 - make style
 - make safety
 # Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
-- docker-compose exec -e ENVIRONMENT=testing web tox -e py36 -- --cov-report=xml --cov-report=term
+- docker-compose exec -e ENVIRONMENT=testing web tox -e py36 -- --cov-report=xml
 - bash <(curl -s https://codecov.io/bash)
 
 before_deploy:
 - ./scripts/install_gcloud.sh
 - ./scripts/install_kubectl.sh
-- make push
+- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then make push; fi
 
 deploy:
   provider: script

@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - BASE_TAG=${BASE_TAG:-alpine}
+        - BASE_TAG=${BASE_TAG}
         - BUILD_COMMIT=${BUILD_COMMIT:-unknown}
         - BUILD_TIMESTAMP=${BUILD_TIMESTAMP:-unknown}
     image: gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}:${IMAGE_TAG:-latest}

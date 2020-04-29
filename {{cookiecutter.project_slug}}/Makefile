@@ -1,8 +1,7 @@
-.PHONY: setup network build start qa style safety test test-travis flake8 \
-    isort-check isort license stop clean logs black-check black
+.PHONY: setup lock own build push start qa style safety test qc stop clean logs
 
 ################################################################################
-# Variables                                                                     #
+# Variables                                                                    #
 ################################################################################
 
 IMAGE ?= gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}
@@ -27,8 +26,7 @@ setup: network
 
 ## Generate the compiled requirements files.
 lock:
-	$(eval LATEST_BASE_TAG := $(shell tag-spy dddecaf/wsgi-base alpine \
-		dk.dtu.biosustain.wsgi-base.alpine.build.timestamp))
+	$(eval LATEST_BASE_TAG := $(shell docker run --rm dddecaf/tag-spy:latest tag-spy dddecaf/wsgi-base alpine dk.dtu.biosustain.wsgi-base.alpine.build.timestamp))
 	$(file >LATEST_BASE_TAG, $(LATEST_BASE_TAG))
 	$(eval COMPILER_TAG := $(subst alpine,alpine-compiler,$(LATEST_BASE_TAG)))
 	$(info ************************************************************)
@@ -48,8 +46,8 @@ own:
 		requirements/requirements.txt
 	sudo chown -R "$(shell id --user --name):$(shell id --group --name)" .tox
 
-## Build local docker images.
-build:
+## Build the Docker image for deployment.
+build-travis:
 	$(eval LATEST_BASE_TAG := $(shell cat LATEST_BASE_TAG))
 	$(info ************************************************************)
 	$(info * Building the service on the basis of:)
@@ -67,7 +65,7 @@ build:
 		.
 
 ## Build the local docker-compose image.
-build-local:
+build:
 	$(eval LATEST_BASE_TAG := $(shell cat LATEST_BASE_TAG))
 	BASE_TAG=$(LATEST_BASE_TAG) docker-compose build
 
@@ -82,22 +80,39 @@ start:
 
 ## Apply all quality assurance (QA) tools.
 qa:
-	docker-compose exec web tox -e isort -- ''
-	docker-compose exec web tox -e black -- ''
+	docker-compose exec -e ENVIRONMENT=testing web \
+		isort --recursive src tests
+	docker-compose exec -e ENVIRONMENT=testing web \
+		black src tests
+
+isort:
+	docker-compose exec -e ENVIRONMENT=testing web \
+		isort --check-only --diff --recursive src tests
+
+black:
+	docker-compose exec -e ENVIRONMENT=testing web \
+		black --check --diff src tests
+
+flake8:
+	docker-compose exec -e ENVIRONMENT=testing web \
+		flake8 src tests
+
+license:
+	docker-compose exec -e ENVIRONMENT=testing web \
+		./scripts/verify_license_headers.sh src tests
 
 ## Run all style checks.
-style:
-	docker-compose exec -e ENVIRONMENT=testing web \
-		tox -e isort,black,flake8,license
+style: isort black flake8 license
 
+## Check installed dependencies for vulnerabilities.
 safety:
 	docker-compose exec -e ENVIRONMENT=testing web \
-		tox -e safety
+		safety check --full-report
 
 ## Run the test suite.
 test:
 	docker-compose exec -e ENVIRONMENT=testing web \
-		tox -e py36
+		pytest --cov={{cookiecutter.project_module}} --cov-report=term
 
 ## Run all quality control (QC) tools.
 qc: style safety test

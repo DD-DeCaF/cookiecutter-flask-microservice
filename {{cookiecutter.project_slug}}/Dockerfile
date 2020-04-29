@@ -34,10 +34,6 @@ ENV PYTHONPATH="${CWD}/src"
 
 WORKDIR "${CWD}"
 
-RUN apk add --no-cache build-base && \
-    pip-sync requirements/requirements.txt && \
-    apk del build-base
-
 COPY requirements ./requirements/
 
 RUN set -eux \

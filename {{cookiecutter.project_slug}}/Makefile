@@ -26,6 +26,7 @@ setup: network
 
 ## Generate the compiled requirements files.
 lock:
+	docker pull dddecaf/tag-spy:latest
 	$(eval LATEST_BASE_TAG := $(shell docker run --rm dddecaf/tag-spy:latest tag-spy dddecaf/wsgi-base alpine dk.dtu.biosustain.wsgi-base.alpine.build.timestamp))
 	$(file >LATEST_BASE_TAG, $(LATEST_BASE_TAG))
 	$(eval COMPILER_TAG := $(subst alpine,alpine-compiler,$(LATEST_BASE_TAG)))
@@ -74,29 +75,10 @@ push:
 	docker push $(IMAGE):$(BRANCH)
 	docker push $(IMAGE):$(BUILD_TAG)
 
-## Recompile requirements and store pinned dependencies with hashes.
-pip-compile:
-	docker run --rm -v `pwd`/requirements:/build dddecaf/wsgi-base:alpine-compiler \
-		pip-compile --generate-hashes --upgrade \
-		--output-file /build/requirements.txt /build/requirements.in
-
 ## Start all services in the background.
 start:
 	docker-compose up --force-recreate -d
 
-## Run all QA targets.
-qa: style safety test gunicorn
-
-## Run all style related targets.
-style: black-check flake8 isort-check license
-
-## Check code for consistency with black.
-black-check:
-	docker-compose run --rm web black --check src tests
-
-## Apply black formatting.
-black:
-	docker-compose run --rm web black src tests
 ## Apply all quality assurance (QA) tools.
 qa:
 	docker-compose exec -e ENVIRONMENT=testing web \

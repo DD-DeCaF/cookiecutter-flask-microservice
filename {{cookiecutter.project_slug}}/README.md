@@ -12,6 +12,21 @@
 
 Perform the following steps after creating a new service from the cookiecutter.
 
+## Development
+
+1. Initialize version tracking by running:
+    1. `git init`
+    2. `git add .`
+    3. `git commit`
+2. Run the setup `make setup`
+3. Generate the dependencies `make lock`
+4. Build the image `make build`
+5. Start your service and get to developing `make start`
+
+Type `make` to see all commands.
+
+## Deployment
+
 * Create kubernetes secrets `{{cookiecutter.project_slug}}-production` and `{{cookiecutter.project_slug}}-staging`. Values needed:
   * `SECRET_KEY` (see [How to generate good secret keys](http://flask.pocoo.org/docs/1.0/quickstart/#sessions))
   * `SENTRY_DSN`
@@ -25,11 +40,6 @@ Perform the following steps after creating a new service from the cookiecutter.
   * Run the following command in the project root directory:
     `travis encrypt "account:token#channel" --add notifications.slack.rooms`
 * Remove this section from the README.
-
-## Development
-
-Run `make setup` first when initializing the project for the first time. Type
-`make` to see all commands.
 
 ### Environment
 

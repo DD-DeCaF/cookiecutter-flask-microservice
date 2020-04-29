@@ -1,6 +1,5 @@
 os: linux
-language: python
-python: "3.7"
+language: shell
 
 git:
   depth: 2
@@ -24,19 +23,19 @@ env:
   - BUILD_TAG=${BRANCH}_${BUILD_DATE}_${SHORT_COMMIT}
 
 before_install:
-- pip install tag-spy
 - make setup
 
 install:
 - make build
-- make build-local
+- make build-travis
 - make start
 
 script:
 - make style
 - make safety
 # Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
-- docker-compose exec -e ENVIRONMENT=testing web tox -e py36 -- --cov-report=xml
+- docker-compose exec -e ENVIRONMENT=testing web \
+    pytest --cov={{cookiecutter.project_module}} --cov-report=term --cov-report=xml
 - bash <(curl -s https://codecov.io/bash)
 
 before_deploy:

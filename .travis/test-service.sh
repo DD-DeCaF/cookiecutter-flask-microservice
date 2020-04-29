@@ -8,8 +8,8 @@ set -eux
 # passed QA, so we're not testing the dependencies here - just the code and
 # configuration in the cookiecutter.
 
-cookiecutter --no-input --output-dir "${HOME}" .
-pushd "${HOME}/name-of-the-project"
+cookiecutter --no-input .
+pushd "name-of-the-project"
 git init
 git add .
 git commit -m "chore: create project template"

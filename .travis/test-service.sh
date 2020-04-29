@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 set -eux
 
 # Test the current state of the cookiecutter app and its configuration by
@@ -6,10 +8,14 @@ set -eux
 # passed QA, so we're not testing the dependencies here - just the code and
 # configuration in the cookiecutter.
 
-cookiecutter --no-input .
-pushd name-of-the-project
-make pip-compile
-# The generated requirements file is initially owned by root, so update ownership.
-sudo chown -R travis .
-make setup build qa
+cookiecutter --no-input --output-dir "${HOME}" .
+pushd "${HOME}/name-of-the-project"
+git init
+git add .
+git commit -m "chore: create project template"
+make lock
+make build
+make setup
+make start
+make qc
 popd

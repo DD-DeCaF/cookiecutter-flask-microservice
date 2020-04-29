@@ -5,7 +5,7 @@
 # Variables                                                                     #
 ################################################################################
 
-IMAGE ?= dddecaf/postgres-base
+IMAGE ?= gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}
 BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 BUILD_COMMIT ?= $(shell git rev-parse HEAD)
 SHORT_COMMIT ?= $(shell git rev-parse --short HEAD)
@@ -65,6 +65,11 @@ build:
 		--tag $(IMAGE):$(BRANCH) \
 		--tag $(IMAGE):$(BUILD_TAG) \
 		.
+
+## Build the local docker-compose image.
+build-local:
+	$(eval LATEST_BASE_TAG := $(shell cat LATEST_BASE_TAG))
+	BASE_TAG=$(LATEST_BASE_TAG) docker-compose build
 
 ## Push local Docker images to their registries.
 push:

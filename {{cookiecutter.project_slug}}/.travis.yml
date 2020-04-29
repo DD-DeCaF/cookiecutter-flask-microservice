@@ -1,5 +1,6 @@
 os: linux
-language: shell
+language: python
+python: "3.7"
 
 git:
   depth: 2
@@ -18,6 +19,7 @@ env:
     - IMAGE_TAG=${TRAVIS_BRANCH}
 
 before_install:
+  - pip install tag-spy
   - make setup
 
 install:

@@ -11,32 +11,36 @@ branches:
   - devel
 
 services:
-  - docker
+- docker
 
 env:
   global:
-    - IMAGE_REPO=gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}
-    - IMAGE_TAG=${TRAVIS_BRANCH}
+  - IMAGE=gcr.io/{{cookiecutter.gcloud_project}}/{{cookiecutter.project_slug}}
+  - BRANCH=${TRAVIS_BRANCH}
+  - BUILD_COMMIT=${TRAVIS_COMMIT}
+  - SHORT_COMMIT=${TRAVIS_COMMIT:0:7}
+  - BUILD_TIMESTAMP=$(date --utc --iso-8601=seconds)
+  - BUILD_DATE=$(date --utc --iso-8601=date)
+  - BUILD_TAG=${BRANCH}_${BUILD_DATE}_${SHORT_COMMIT}
 
 before_install:
-  - pip install tag-spy
-  - make setup
+- pip install tag-spy
+- make setup
 
 install:
-  - docker build -t ${IMAGE_REPO}:${TRAVIS_COMMIT::12} -t ${IMAGE_REPO}:${TRAVIS_BRANCH} .
+- make build
 
 script:
-  - make style
-  - make safety
+- make style
+- make safety
 # Run the tests and report coverage (see https://docs.codecov.io/docs/testing-with-docker).
-  - docker-compose exec -e ENVIRONMENT=testing web tox -e py36 -- --cov-report=xml --cov-report=term
-  - bash <(curl -s https://codecov.io/bash)
+- docker-compose exec -e ENVIRONMENT=testing web tox -e py36 -- --cov-report=xml --cov-report=term
+- bash <(curl -s https://codecov.io/bash)
 
 before_deploy:
-  - ./scripts/install_gcloud.sh
-  - ./scripts/install_kubectl.sh
-  - docker push ${IMAGE_REPO}:${TRAVIS_COMMIT::12}
-  - docker push ${IMAGE_REPO}:${TRAVIS_BRANCH}
+- ./scripts/install_gcloud.sh
+- ./scripts/install_kubectl.sh
+- make push
 
 deploy:
   provider: script

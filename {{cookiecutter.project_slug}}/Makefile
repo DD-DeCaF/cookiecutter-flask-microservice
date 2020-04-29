@@ -2,6 +2,18 @@
     isort-check isort license stop clean logs black-check black
 
 ################################################################################
+# Variables                                                                     #
+################################################################################
+
+IMAGE ?= dddecaf/postgres-base
+BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
+BUILD_COMMIT ?= $(shell git rev-parse HEAD)
+SHORT_COMMIT ?= $(shell git rev-parse --short HEAD)
+BUILD_TIMESTAMP ?= $(shell date --utc --iso-8601=seconds)
+BUILD_DATE ?= $(shell date --utc --iso-8601=date)
+BUILD_TAG ?= ${BRANCH}_${BUILD_DATE}_${SHORT_COMMIT}
+
+################################################################################
 # Commands                                                                     #
 ################################################################################
 
@@ -15,10 +27,20 @@ setup: network
 
 ## Generate the compiled requirements files.
 lock:
+	$(eval LATEST_BASE_TAG := $(shell tag-spy dddecaf/wsgi-base alpine \
+		dk.dtu.biosustain.wsgi-base.alpine.build.timestamp))
+	$(file >LATEST_BASE_TAG, $(LATEST_BASE_TAG))
+	$(eval COMPILER_TAG := $(subst alpine,alpine-compiler,$(LATEST_BASE_TAG)))
+	$(info ************************************************************)
+	$(info * Compiling service dependencies on the basis of:)
+	$(info * dddecaf/wsgi-base:$(COMPILER_TAG))
+	$(info ************************************************************)
+	docker pull dddecaf/wsgi-base:$(COMPILER_TAG)
 	docker run --rm --mount \
-		"source=$(CURDIR)/requirements,target=/opt/requirements/child,type=bind" \
-		dddecaf/wsgi-base:devel pip-compile --verbose --generate-hashes \
-		--upgrade child/requirements.in
+		"source=$(CURDIR)/requirements,target=/opt/requirements,type=bind" \
+		dddecaf/wsgi-base:$(COMPILER_TAG) \
+		pip-compile --allow-unsafe --verbose --generate-hashes --upgrade \
+		/opt/requirements/requirements.in
 
 ## Change file ownership from root to local user.
 own:
@@ -28,7 +50,26 @@ own:
 
 ## Build local docker images.
 build:
-	docker-compose build
+	$(eval LATEST_BASE_TAG := $(shell cat LATEST_BASE_TAG))
+	$(info ************************************************************)
+	$(info * Building the service on the basis of:)
+	$(info * dddecaf/wsgi-base:$(LATEST_BASE_TAG))
+	$(info * Today is $(shell date --utc --iso-8601=date).)
+	$(info * Please re-run `make lock` if you want to check for and)
+	$(info * depend on a later version.)
+	$(info ************************************************************)
+	docker pull dddecaf/wsgi-base:$(LATEST_BASE_TAG)
+	docker build --build-arg BASE_TAG=$(LATEST_BASE_TAG) \
+		--build-arg BUILD_COMMIT=$(BUILD_COMMIT) \
+		--build-arg BUILD_TIMESTAMP=$(BUILD_TIMESTAMP) \
+		--tag $(IMAGE):$(BRANCH) \
+		--tag $(IMAGE):$(BUILD_TAG) \
+		.
+
+## Push local Docker images to their registries.
+push:
+	docker push $(IMAGE):$(BRANCH)
+	docker push $(IMAGE):$(BUILD_TAG)
 
 ## Start all services in the background.
 start:

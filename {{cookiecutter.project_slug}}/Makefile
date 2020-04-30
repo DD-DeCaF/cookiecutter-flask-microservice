@@ -43,9 +43,7 @@ lock:
 
 ## Change file ownership from root to local user.
 own:
-	sudo chown "$(shell id --user --name):$(shell id --group --name)" \
-		requirements/requirements.txt
-	sudo chown -R "$(shell id --user --name):$(shell id --group --name)" .tox
+	sudo chown "$(shell id --user --name):$(shell id --group --name)" .
 
 ## Build the Docker image for deployment.
 build-travis:

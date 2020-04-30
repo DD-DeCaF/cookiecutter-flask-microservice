@@ -39,7 +39,6 @@ spec:
             secretKeyRef:
               name: {{cookiecutter.project_slug}}-production
               key: SENTRY_DSN
-        command: ["gunicorn", "-c", "gunicorn.py", "{{cookiecutter.project_module}}.wsgi:app"]
         readinessProbe:
           httpGet:
             path: /{{cookiecutter.project_slug}}/healthz
@@ -94,7 +93,6 @@ spec:
             secretKeyRef:
               name: {{cookiecutter.project_slug}}-staging
               key: SENTRY_DSN
-        command: ["gunicorn", "-c", "gunicorn.py", "{{cookiecutter.project_module}}.wsgi:app"]
         readinessProbe:
           httpGet:
             path: /{{cookiecutter.project_slug}}/healthz

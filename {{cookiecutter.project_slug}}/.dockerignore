@@ -5,3 +5,4 @@
 !requirements/
 !gunicorn.py
 !setup.cfg
+!pyproject.toml
